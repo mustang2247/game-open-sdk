@@ -23,7 +23,7 @@ import java.util.Map;
  * Created by mustangkong on 2016/12/30.
  * 函数映射class
  */
-public class NativeExtensionContext extends UnityPlayerActivity {
+public class MainActivityContext extends UnityPlayerActivity {
 
     Context mContext = null;
 
@@ -33,8 +33,6 @@ public class NativeExtensionContext extends UnityPlayerActivity {
 
         Log.i(Constants.tag, "unity3d onCreate: ");
         mContext = this;
-
-       openApiGetDeviceInfo();
     }
 
     @Override
@@ -102,8 +100,8 @@ public class NativeExtensionContext extends UnityPlayerActivity {
 
         String jsonResult = JSON.toJSONString(params);
 
-        Log.i(Constants.tag, "unity3d onCreate: " + jsonResult);
-        UnityPlayer.UnitySendMessage("openApiGetDeviceInfo", "openApiGetDeviceInfo", "hi:  " + jsonResult);
+        Log.i(Constants.tag, "unity3d openApiGetDeviceInfo: " + jsonResult);
+        sentMessage("MainGame", "GetMessage", jsonResult);
 
     }
 
@@ -135,11 +133,28 @@ public class NativeExtensionContext extends UnityPlayerActivity {
     public void StartActivity0(String name)
     {
         if (name == null || name.isEmpty()) return;
-
-        UnityPlayer.UnitySendMessage("Main Camera", "messgae", "hi:  " + name);
+        Log.i(Constants.tag, name);
+        // 参数1表示发送游戏对象的名称
+        // 参数2表示对象绑定的脚本接收该消息的方法
+        // 参数3表示本条消息发送的字符串信息，这个方法与IOS发送消息的方式非常相像
+        sentMessage("MainGame", "GetMessage", "hi:  " + name);
 //        Intent intent = new Intent(mContext,Activity0.class);
 //        intent.putExtra("name", name);
 //        this.startActivity(intent);
+    }
+
+    /**
+     *
+     * @param gameObject 参数1表示发送游戏对象的名称
+     * @param methodName 参数2表示对象绑定的脚本接收该消息的方法
+     * @param msg        参数3表示本条消息发送的字符串信息，这个方法与IOS发送消息的方式非常相像
+     */
+    public static void sentMessage(String gameObject, String methodName, String msg){
+        try {
+            UnityPlayer.UnitySendMessage(gameObject, methodName, msg);
+        }catch (Exception e){
+            Log.i(Constants.tag, e.getMessage());
+        }
     }
 
 

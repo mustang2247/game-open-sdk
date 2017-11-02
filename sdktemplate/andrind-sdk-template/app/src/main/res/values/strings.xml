@@ -1,3 +1,4 @@
 <resources>
+    <string name="hello">Hello World, Main!</string>
     <string name="app_name">andrindsdktemplate</string>
 </resources>

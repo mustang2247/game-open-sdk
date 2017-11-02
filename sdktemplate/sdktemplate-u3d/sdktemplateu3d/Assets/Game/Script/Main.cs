@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Main : MonoBehaviour
 {
@@ -10,17 +8,17 @@ public class Main : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        print(SystemInfo.batteryLevel);
-        print(SystemInfo.batteryStatus);
-
-        print(SystemInfo.deviceModel);
-        print(SystemInfo.deviceName);
-        print(SystemInfo.deviceType);
-        print(SystemInfo.deviceUniqueIdentifier);
-
-        print(SystemInfo.operatingSystem);
-        print(SystemInfo.operatingSystemFamily);
-        print(SystemInfo.systemMemorySize);
+//        print(SystemInfo.batteryLevel);
+//        print(SystemInfo.batteryStatus);
+//
+//        print(SystemInfo.deviceModel);
+//        print(SystemInfo.deviceName);
+//        print(SystemInfo.deviceType);
+//        print(SystemInfo.deviceUniqueIdentifier);
+//
+//        print(SystemInfo.operatingSystem);
+//        print(SystemInfo.operatingSystemFamily);
+//        print(SystemInfo.systemMemorySize);
     }
 
     void Update()
@@ -50,11 +48,30 @@ public class Main : MonoBehaviour
                 }
             }
         }
+        
+        
+        if (GUILayout.Button("openApiGetDeviceInfo", GUILayout.Height(50)))
+        {
+            //注解1
+            using (AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+            {
+                using (AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity"))
+                {
+                    //调用Android插件中UnityTestActivity中StartActivity0方法，stringToEdit表示它的参数
+                    jo.Call("openApiGetDeviceInfo");
+                }
+            }
+        }
+        
+        
     }
 
-    //注解2
-    void messgae(string str)
+    /// <summary>
+    /// 接收消息
+    /// </summary>
+    /// <param name="str"></param>
+    void GetMessage(string str)
     {
-        stringToEdit = str;
+        stringToEdit = "恭喜：   " + str;
     }
 }
