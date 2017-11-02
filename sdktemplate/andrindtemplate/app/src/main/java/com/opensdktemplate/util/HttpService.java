@@ -2,7 +2,7 @@ package com.opensdktemplate.util;
 
 import android.util.Log;
 
-import com.openapi.Constants;
+import com.opensdktemplate.Constants;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;

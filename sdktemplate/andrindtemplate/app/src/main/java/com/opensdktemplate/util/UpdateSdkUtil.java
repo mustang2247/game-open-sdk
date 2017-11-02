@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.openapi.Constants;
+import com.opensdktemplate.Constants;
 
 /**
  * Created by Administrator on 2016/12/6.

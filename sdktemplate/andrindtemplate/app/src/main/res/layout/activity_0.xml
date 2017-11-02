@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.opensdktemplate.activity.Activity0">
+
+    <Button
+        android:id="@+id/button0"
+        android:layout_width="169dp"
+        android:layout_height="70dp"
+        android:text="点击我"
+        android:gravity="center"
+        tools:layout_editor_absoluteX="122dp"
+        tools:layout_editor_absoluteY="250dp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="146dp"
+        android:layout_height="25dp"
+        android:text="哈哈哈哈asdfasdf"
+        tools:layout_editor_absoluteX="44dp"
+        tools:layout_editor_absoluteY="67dp"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/edit"
+        android:layout_width="347dp"
+        android:layout_height="141dp"
+        android:ems="10"
+        android:gravity="center"
+        android:inputType="textPersonName"
+        android:singleLine="false"
+        android:text="asdf"
+        android:visibility="visible"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="109dp" />
+</android.support.constraint.ConstraintLayout>

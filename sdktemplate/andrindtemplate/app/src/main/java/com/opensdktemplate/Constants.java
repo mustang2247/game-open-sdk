@@ -10,7 +10,7 @@ public class Constants {
     public final static int TIP_UPDATE = 2;
     public final static int FORCE_UPDATE = 3;
 
-    public static final String tag = "openapi";
+    public static final String tag = "openapiunity3d";
 
 
 

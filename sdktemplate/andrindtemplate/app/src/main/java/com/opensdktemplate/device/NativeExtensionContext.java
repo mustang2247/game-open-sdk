@@ -1,5 +1,6 @@
 package com.opensdktemplate.device;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.KeyEvent;
 import com.alibaba.fastjson.JSON;
 import com.opensdktemplate.Constants;
 import com.opensdktemplate.DeviceTools;
+import com.opensdktemplate.activity.Activity0;
 import com.opensdktemplate.util.APNUtil;
 import com.opensdktemplate.util.SysUtil;
 import com.opensdktemplate.util.UpdateSdkUtil;
@@ -23,16 +25,16 @@ import java.util.Map;
  */
 public class NativeExtensionContext extends UnityPlayerActivity {
 
-    public NativeExtensionContext() {
-
-    }
+    Context mContext = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String json = openApiGetDeviceInfo();
+        Log.i(Constants.tag, "unity3d onCreate: ");
+        mContext = this;
 
+        String json = openApiGetDeviceInfo();
         Log.i(Constants.tag, "unity3d onCreate: " + json);
     }
 
@@ -112,7 +114,7 @@ public class NativeExtensionContext extends UnityPlayerActivity {
      String update_url = dynamicConfig.getString("updateUrl");
      String updateMsg = dynamicConfig.getString("updateMsg");
      */
-    private void openApiGetdownload() {
+    public void openApiGetdownload() {
         Log.i(Constants.tag, "openApiGetdownload ok");
         try{
             // 版本更新处理
@@ -121,4 +123,19 @@ public class NativeExtensionContext extends UnityPlayerActivity {
             Log.i(Constants.tag, "openApiGetdownload err");
         }
     }
+
+    //==================================================
+
+    /**
+     * unity3d与Android通讯接口
+     * @param name
+     */
+    public void StartActivity0(String name)
+    {
+        Intent intent = new Intent(mContext,Activity0.class);
+        intent.putExtra("name", name);
+        this.startActivity(intent);
+    }
+
+
 }
