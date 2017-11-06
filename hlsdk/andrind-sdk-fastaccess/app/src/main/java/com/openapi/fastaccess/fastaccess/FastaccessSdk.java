@@ -1,4 +1,4 @@
-package com.openapi.template.fastaccess;
+package com.openapi.fastaccess.fastaccess;
 
 import android.app.Activity;
 import android.content.Context;
@@ -26,8 +26,8 @@ import com.hoolai.open.fastaccess.channel.bi.SendBICallback;
 import com.hoolai.open.fastaccess.channel.callback.LoginCallback;
 import com.hoolai.open.fastaccess.channel.util.LogUtil;
 import com.hoolai.open.fastaccess.channel.util.Strings;
+import com.openapi.fastaccess.activity.MainActivityFastAccess;
 import com.openapi.template.Constants;
-import com.openapi.template.activity.MainActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -89,7 +89,7 @@ public class FastaccessSdk {
             Log.d(Constants.tag, "onInitSuccess");
             initStatus = InitStatus.SUCCESS;
             if (!Strings.isNullOrEmpty(initCallback)) {
-                MainActivity.sentMessage(SDKListening, initCallback, toResultData(Type_Init_Success, new Entry("data", FastSdk.getChannelInfo().getInitParams())));
+                MainActivityFastAccess.sentMessage(SDKListening, initCallback, toResultData(Type_Init_Success, new Entry("data", FastSdk.getChannelInfo().getInitParams())));
             }
         }
 
@@ -98,7 +98,7 @@ public class FastaccessSdk {
             Log.d(Constants.tag, "onInitFail");
             initStatus = InitStatus.FAIL;
             if (!Strings.isNullOrEmpty(initCallback)) {
-                MainActivity.sentMessage(SDKListening, initCallback, toResultData(Type_Init_Fail, null));
+                MainActivityFastAccess.sentMessage(SDKListening, initCallback, toResultData(Type_Init_Fail, null));
             }
         }
     };
@@ -110,7 +110,7 @@ public class FastaccessSdk {
                 paramObject[0] = "onLogout";
             }
             Log.d(Constants.tag, "onLogoutSuccess start");
-            MainActivity.sentMessage(SDKListening, loginCallback, toResultData(Type_Logout, new Entry("customParams", paramObject)));
+            MainActivityFastAccess.sentMessage(SDKListening, loginCallback, toResultData(Type_Logout, new Entry("customParams", paramObject)));
             Log.d(Constants.tag, "onLogoutSuccess end");
         }
 
@@ -130,7 +130,7 @@ public class FastaccessSdk {
 //				jo.put("customParams", "onLoginSuccess");
 
                 Log.d(Constants.tag, "onLoginSuccess");
-                MainActivity.sentMessage(SDKListening, loginCallback, toResultData(Type_Login_Success, new Entry("data", jo)));
+                MainActivityFastAccess.sentMessage(SDKListening, loginCallback, toResultData(Type_Login_Success, new Entry("data", jo)));
             } catch (Exception e) {
                 Log.e(Constants.tag, "验证access出现异常", e);
             }
@@ -143,7 +143,7 @@ public class FastaccessSdk {
             jo.put("customParams", "onLoginFailed");
             jo.put("detail", resultValue);
             Log.d(Constants.tag, "onLoginFailed");
-            MainActivity.sentMessage(SDKListening, loginCallback, toResultData(Type_Login_Fail, new Entry("data", jo)));
+            MainActivityFastAccess.sentMessage(SDKListening, loginCallback, toResultData(Type_Login_Fail, new Entry("data", jo)));
         }
     };
     // 支付回调
@@ -151,13 +151,13 @@ public class FastaccessSdk {
         @Override
         public void onSuccess(String param) {
             Log.d(Constants.tag, "onPaySuccess");
-            MainActivity.sentMessage(SDKListening, payCallback, toResultData(Type_Pay_Success, new Entry("customParams", "onSuccess Pay " + param)));
+            MainActivityFastAccess.sentMessage(SDKListening, payCallback, toResultData(Type_Pay_Success, new Entry("customParams", "onSuccess Pay " + param)));
         }
 
         @Override
         public void onFail(String param) {
             Log.d(Constants.tag, "onPayFail");
-            MainActivity.sentMessage(SDKListening, payCallback, toResultData(Type_Pay_Fail, new Entry("customParams", "onFail Pay " + param)));
+            MainActivityFastAccess.sentMessage(SDKListening, payCallback, toResultData(Type_Pay_Fail, new Entry("customParams", "onFail Pay " + param)));
         }
     };
 
@@ -173,7 +173,7 @@ public class FastaccessSdk {
 
                         @Override
                         public void onMaintenance(String msg) {
-                            MainActivity.sentMessage(SDKListening, onMaintenanceCallback, msg);
+                            MainActivityFastAccess.sentMessage(SDKListening, onMaintenanceCallback, msg);
                         }
                     });
                 }
@@ -216,14 +216,14 @@ public class FastaccessSdk {
                     @Override
                     public void onExitSuccess(String s) {
                         Log.d(Constants.tag, "onExitSuccess start");
-                        MainActivity.sentMessage(SDKListening, exitCallbackMethod, toResultData(Type_Exit_Channel, null));
+                        MainActivityFastAccess.sentMessage(SDKListening, exitCallbackMethod, toResultData(Type_Exit_Channel, null));
                         Log.d(Constants.tag, "onExitSuccess end");
                     }
 
                     @Override
                     public void onCustomExit(final String s) {
                         Log.d(Constants.tag, "onCustomExit start");
-                        MainActivity.sentMessage(SDKListening, exitCallbackMethod, toResultData(Type_Exit_Game, null));
+                        MainActivityFastAccess.sentMessage(SDKListening, exitCallbackMethod, toResultData(Type_Exit_Game, null));
                         Log.d(Constants.tag, "onCustomExit end");
                     }
                 });
@@ -242,13 +242,13 @@ public class FastaccessSdk {
                     @Override
                     public void onSuccess(ServerInfos serverInfos) {
                         Log.d(Constants.tag, "onGetServersSuccess");
-                        MainActivity.sentMessage(SDKListening, callbackMethod, toResultData(Type_GetServers_Success, new Entry("serverInfos", serverInfos)));
+                        MainActivityFastAccess.sentMessage(SDKListening, callbackMethod, toResultData(Type_GetServers_Success, new Entry("serverInfos", serverInfos)));
                     }
 
                     @Override
                     public void onFail(String code, String desc) {
                         Log.d(Constants.tag, "onGetServersFail");
-                        MainActivity.sentMessage(SDKListening, callbackMethod, toResultData(Type_GetServers_Fail, new Entry("desc", desc)));
+                        MainActivityFastAccess.sentMessage(SDKListening, callbackMethod, toResultData(Type_GetServers_Fail, new Entry("desc", desc)));
                     }
                 });
             }
@@ -266,13 +266,13 @@ public class FastaccessSdk {
                     @Override
                     public void onSuccess() {
                         Log.d(Constants.tag, "onSelectServersSuccess");
-                        MainActivity.sentMessage(SDKListening, callbackMethod, toResultData(Type_SelectServer_Success, null));
+                        MainActivityFastAccess.sentMessage(SDKListening, callbackMethod, toResultData(Type_SelectServer_Success, null));
                     }
 
                     @Override
                     public void onFail(String code, String desc) {
                         Log.d(Constants.tag, "onSelectServersFail");
-                        MainActivity.sentMessage(SDKListening, callbackMethod, toResultData(Type_SelectServer_Fail, new Entry("desc", desc)));
+                        MainActivityFastAccess.sentMessage(SDKListening, callbackMethod, toResultData(Type_SelectServer_Fail, new Entry("desc", desc)));
                     }
                 });
             }
@@ -290,7 +290,7 @@ public class FastaccessSdk {
                     @Override
                     public void onResult(String message) {
                         Log.d(Constants.tag, "onSendBiData Result=" + message);
-                        MainActivity.sentMessage(SDKListening, callbackMethod, message);
+                        MainActivityFastAccess.sentMessage(SDKListening, callbackMethod, message);
                     }
                 });
             }
@@ -326,9 +326,9 @@ public class FastaccessSdk {
         Log.d(Constants.tag, "doInit：SDKListening=" + SDKListening + ",initCallback=" + initCallback + ",loginCallback=" + loginCallback + ",payCallback=" + payCallback);
         FastSdk.setLoginCallback(loginCallbackImpl);
         if (initStatus == InitStatus.SUCCESS) {
-            MainActivity.sentMessage(SDKListening, initCallback, toResultData(Type_Init_Success, new Entry("data", FastSdk.getChannelInfo().getInitParams())));
+            MainActivityFastAccess.sentMessage(SDKListening, initCallback, toResultData(Type_Init_Success, new Entry("data", FastSdk.getChannelInfo().getInitParams())));
         } else {
-            MainActivity.sentMessage(SDKListening, initCallback, toResultData(Type_Init_Fail, null));
+            MainActivityFastAccess.sentMessage(SDKListening, initCallback, toResultData(Type_Init_Fail, null));
         }
     }
 
@@ -374,7 +374,7 @@ public class FastaccessSdk {
                 @Override
                 public void process(Object... objects) {
                     String jsonStr = JSON.toJSONString(objects);
-                    MainActivity.sentMessage(SDKListening, (String) methodName, jsonStr);
+                    MainActivityFastAccess.sentMessage(SDKListening, (String) methodName, jsonStr);
                 }
             };
         }
@@ -440,7 +440,7 @@ public class FastaccessSdk {
             @Override
             public void run() {
                 Log.d(Constants.tag, "runOnAndroidUIThread：SDKListening=" + gameObject + ",callbackMethod=" + callbackMethod);
-                MainActivity.sentMessage(gameObject, callbackMethod, "");
+                MainActivityFastAccess.sentMessage(gameObject, callbackMethod, "");
             }
         });
     }

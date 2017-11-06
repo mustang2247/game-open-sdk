@@ -1,4 +1,4 @@
-package com.openapi.template.fastaccess;
+package com.openapi.fastaccess.fastaccess;
 
 /**
  * Created by muskong on 2017/11/2.
