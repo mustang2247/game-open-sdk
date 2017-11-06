@@ -3,8 +3,7 @@
     package="com.openapi.template">
 
     <uses-sdk
-        android:minSdkVersion="15"
-        android:targetSdkVersion="19" />
+        android:minSdkVersion="16" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -40,22 +39,6 @@
                 android:value="true" />
 
         </activity>
-
-        <activity
-            android:name="com.hoolai.sdk.activity.FastAccessLoginActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:windowSoftInputMode="adjustResize"></activity>
-        <activity
-            android:name="com.hoolai.sdk.activity.FastAccessNotifyActivity"
-            android:screenOrientation="sensor"></activity>
-        <activity
-            android:name="com.hoolai.open.fastaccess.channel.impl.fastaccess.FASTACCESSSplashActivity"
-            android:screenOrientation="sensor" />
-        <!-- 将下面meta-data的value替换为接入平台的productId -->
-        <meta-data
-            android:name="game_package_product_id"
-            android:value="1" />
 
     </application>
 
