@@ -1,9 +1,12 @@
-//apply plugin: 'com.android.application'
 apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.1"
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 22
+    }
 
     packagingOptions {
         exclude 'META-INF/*.*'
@@ -14,17 +17,8 @@ android {
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/INDEX.LIST'
-
     }
 
-    defaultConfig {
-//        applicationId "com.bdsdk.openapi"
-        minSdkVersion 15
-        targetSdkVersion 19
-//        versionCode 1
-//        versionName "1.0"
-//        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    }
     buildTypes {
         release {
             minifyEnabled false
@@ -37,13 +31,20 @@ android {
             abortOnError false
         }
     }
+
+    repositories{
+        flatDir {
+            dirs 'libs'
+        }
+    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.alibaba:fastjson:1.2.35'
-    compile 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
     compile 'com.android.support:appcompat-v7:25.0.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
-    compile 'com.squareup.okhttp3:okhttp:3.8.1'
+//    compile 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
+
+    compile(name: 'openapi', ext:'aar')
+
 }

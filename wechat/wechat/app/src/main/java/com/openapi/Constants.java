@@ -51,9 +51,6 @@ public class Constants {
     public static final int WXSceneFavorite = 2;    //添加到微信收藏
 
 
-
-
-
     public static byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle) {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.PNG, 100, output);

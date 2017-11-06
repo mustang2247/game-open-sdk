@@ -1,8 +1,7 @@
-package com.openapi.ane.wxapi;
+package com.openapi;
 
 import android.util.Log;
 
-import com.openapi.Constants;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -17,7 +16,6 @@ import java.nio.ByteBuffer;
  *
  * 微信分享API
  */
-
 public class WXShareManager {
 
     private static WXShareManager _instance;
@@ -122,3 +120,4 @@ public class WXShareManager {
     }
 
 }
+

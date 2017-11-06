@@ -5,7 +5,35 @@
     <uses-sdk android:minSdkVersion="16"></uses-sdk>
 
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/icon"
+        android:label="@string/app_name">
+        <activity android:name="com.openapi.MainWechatActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <meta-data
+                android:name="unityplayer.UnityActivity"
+                android:value="true" />
+
+        </activity>
+
+        <!--微信api需要将air.com.hoolai.jjby替换成相应的报名-->
+        <!--android:name="replaceByHoolaiPackageName.wxapi.WXEntryActivity"-->
+        <activity
+            android:name="com.hoolai.jjby.wxapi.WXEntryActivity"
+            android:exported="true">
+        </activity>
+
+    </application>
+
 </manifest>
