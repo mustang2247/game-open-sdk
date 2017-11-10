@@ -106,12 +106,12 @@ public class FastaccessSdk {
     private LoginCallback loginCallbackImpl = new LoginCallback() {
         @Override
         public void onLogout(Object... paramObject) {
-            if (paramObject == null || paramObject.length == 0 || !(paramObject[0] instanceof String)) {
-                if (paramObject == null){
-                    paramObject = new Object[]{};
-                }
-                paramObject[0] = "onLogout";
-            }
+//            if (paramObject == null || paramObject.length == 0 || !(paramObject[0] instanceof String)) {
+//                if (paramObject == null){
+//                    paramObject = new Object[]{};
+//                }
+//                paramObject[0] = "onLogout";
+//            }
             Log.d(Constants.tag, "onLogoutSuccess start");
             MainActivityFastAccess.sentMessage(SDKListening, loginCallback, toResultData(Type_Logout, new Entry("customParams", paramObject)));
             Log.d(Constants.tag, "onLogoutSuccess end");
