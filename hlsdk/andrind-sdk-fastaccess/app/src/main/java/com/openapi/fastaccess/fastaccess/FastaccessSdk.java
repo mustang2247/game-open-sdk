@@ -107,6 +107,9 @@ public class FastaccessSdk {
         @Override
         public void onLogout(Object... paramObject) {
             if (paramObject == null || paramObject.length == 0 || !(paramObject[0] instanceof String)) {
+                if (paramObject == null){
+                    paramObject = new Object[]{};
+                }
                 paramObject[0] = "onLogout";
             }
             Log.d(Constants.tag, "onLogoutSuccess start");
@@ -321,6 +324,7 @@ public class FastaccessSdk {
         this.SDKListening = SDKListening;
         this.initCallback = initCallback;
         this.loginCallback = loginCallback;
+        this.payCallback = payCallback;
         this.onMaintenanceCallback = onMaintenanceCallback;
 
         Log.d(Constants.tag, "doInit：SDKListening=" + SDKListening + ",initCallback=" + initCallback + ",loginCallback=" + loginCallback + ",payCallback=" + payCallback);
