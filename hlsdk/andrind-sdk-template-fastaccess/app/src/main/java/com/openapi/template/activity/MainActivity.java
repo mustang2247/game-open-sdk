@@ -198,7 +198,7 @@ public class MainActivity extends UnityPlayerActivity {
     public void openApiGetdownload() {
         Log.i(Constants.tag, "openApiGetdownload ok");
         try {
-            String json = "{\"updateVersion\":\"2.1.0\",\"updateType\":\"2\",\"packageName\":\"com.hule.fishing\",\"updateUrl\":1,\"updateMsg\":\"2.1.0\"}";
+            String json = "{\"updateVersion\":\"2.1.0\",\"updateType\":\"2\",\"packageName\":\"com.hule.fishing\",\"updateUrl\":\"http://huleshikongres-10034783.file.myqcloud.com/newjjfishing/res/360xinjiejibuyu.apk\",\"updateMsg\":\"2.1.0\"}";
             // 版本更新处理
             UpdateSdkUtil.updateSdkVersion(this, "2.0.0", json, "测试下载", new ChannelInterfaceProxy.ApplicationInitCallback() {
                 @Override
