@@ -176,7 +176,7 @@ public class UpdateSdkUtil {
             @Override
             public void execute() {
                 Intent intent = new Intent();
-                intent.setAction("com.openapi.template.util.UpdateService");
+                intent.setAction("com.openapi.util.UpdateService");
                 intent.setPackage(context.getPackageName());
                 intent.putExtra(UpdateService.DOWNLOAD_URL, update_url);
                 intent.putExtra(UpdateService.DOWNLOAD_APP_NAME, appName);
@@ -192,7 +192,15 @@ public class UpdateSdkUtil {
         });
     }
 
-    private static void updateSdkAlert(Context context, String msg, final boolean forceUpdate, ChannelInterfaceProxy.ApplicationInitCallback applicationInitCallback, ChannelInterfaceProxy.ApplicationInitCallback initCallback) {
+    /**
+     * 更新提示
+     * @param context
+     * @param msg
+     * @param forceUpdate
+     * @param nextCallback
+     * @param updateCallback
+     */
+    private static void updateSdkAlert(Context context, String msg, final boolean forceUpdate, final ChannelInterfaceProxy.ApplicationInitCallback nextCallback, final ChannelInterfaceProxy.ApplicationInitCallback updateCallback) {
         final AlertDialog alertDialog = new AlertDialog.Builder(context, AlertDialog.THEME_HOLO_LIGHT).create();
 
         LinearLayout linearLayoutRoot = new LinearLayout(context);
@@ -236,7 +244,7 @@ public class UpdateSdkUtil {
                 @Override
                 public void onClick(View v) {
                     alertDialog.cancel();
-//                    nextCallback.execute();
+                    nextCallback.execute();
                 }
             });
             LinearLayout.LayoutParams nextLL = new LinearLayout.LayoutParams(0, dipToPx(context, 40));
@@ -259,7 +267,7 @@ public class UpdateSdkUtil {
                     updateBtn.setText("后台更新中...");
                     updateBtn.setEnabled(false);
                 }
-//                updateCallback.execute();
+                updateCallback.execute();
             }
         });
         LinearLayout.LayoutParams updateLL = new LinearLayout.LayoutParams(0, dipToPx(context, 40));

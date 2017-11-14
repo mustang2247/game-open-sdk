@@ -2,7 +2,6 @@ package com.openapi.template.util;
 
 import android.util.Log;
 
-
 import com.openapi.template.Constants;
 
 import java.io.UnsupportedEncodingException;

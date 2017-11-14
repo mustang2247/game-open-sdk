@@ -195,12 +195,12 @@ public class MainActivity extends UnityPlayerActivity {
      * String update_url = dynamicConfig.getString("updateUrl");
      * String updateMsg = dynamicConfig.getString("updateMsg");
      */
-    public void openApiGetdownload() {
+    public void openApiGetdownload(String currentVersionCode, String configInfo, final String appName) {
         Log.i(Constants.tag, "openApiGetdownload ok");
         try {
-            String json = "{\"updateVersion\":\"2.1.0\",\"updateType\":\"2\",\"packageName\":\"com.hule.fishing\",\"updateUrl\":\"http://huleshikongres-10034783.file.myqcloud.com/newjjfishing/res/360xinjiejibuyu.apk\",\"updateMsg\":\"2.1.0\"}";
+//            String json = "{\"updateVersion\":\"2.1.0\",\"updateType\":\"2\",\"packageName\":\"com.hule.fishing\",\"updateUrl\":\"http://huleshikongres-10034783.cossh.myqcloud.com/download.apk\",\"updateMsg\":\"2.1.0\"}";
             // 版本更新处理
-            UpdateSdkUtil.updateSdkVersion(this, "2.0.0", json, "测试下载", new ChannelInterfaceProxy.ApplicationInitCallback() {
+            UpdateSdkUtil.updateSdkVersion(this, currentVersionCode, configInfo, appName, new ChannelInterfaceProxy.ApplicationInitCallback() {
                 @Override
                 public void execute() {
                     Log.i(Constants.tag, "加载apk失败，参数不正确！！！！！");

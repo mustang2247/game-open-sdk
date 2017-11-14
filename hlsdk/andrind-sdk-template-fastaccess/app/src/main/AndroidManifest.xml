@@ -40,6 +40,13 @@
 
         </activity>
 
+        <service android:name="com.openapi.template.util.UpdateService"
+            android:enabled="true">
+            <intent-filter >
+                <action android:name="com.openapi.util.UpdateService"/>
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

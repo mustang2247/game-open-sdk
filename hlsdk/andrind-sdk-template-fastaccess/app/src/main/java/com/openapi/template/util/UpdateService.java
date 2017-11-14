@@ -11,6 +11,9 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.openapi.template.Constants;
+
+
 /**
  * 检测安装更新文件的助手类
  */
@@ -32,6 +35,8 @@ public class UpdateService extends Service {
      * 初始化下载器
      **/
     private void initDownManager(String url, String name) {
+        Log.i(Constants.tag, "initDownManager 初始化下载器  " + url);
+
         manager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         receiver = new DownloadCompleteReceiver();
         //设置下载地址
@@ -80,6 +85,8 @@ public class UpdateService extends Service {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.i(Constants.tag, "onReceive 接受下载完成后的自动安装apk  ");
+
             //判断是否下载完成的广播
             if (intent.getAction().equals(DownloadManager.ACTION_DOWNLOAD_COMPLETE)) {
                 //获取下载的文件id
