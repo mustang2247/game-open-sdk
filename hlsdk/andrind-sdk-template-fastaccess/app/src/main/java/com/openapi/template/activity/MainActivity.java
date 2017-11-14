@@ -10,6 +10,7 @@ import com.hoolai.fastaccesssdk.fastaccess.FastaccessSdk;
 import com.hoolai.fastaccesssdk.fastaccess.SendMessageCallBack;
 import com.hoolai.open.fastaccess.channel.FastSdk;
 import com.openapi.template.Constants;
+import com.openapi.template.cb.ChannelInterfaceProxy;
 import com.openapi.template.info.DeviceTools;
 import com.openapi.template.util.UpdateSdkUtil;
 import com.unity3d.player.UnityPlayer;
@@ -38,9 +39,9 @@ public class MainActivity extends UnityPlayerActivity {
             }
         });
 
-         // 接入开始
+        // 接入开始
         FastSdk.onCreate(this, FastaccessSdk.getInstance().initCallbackImpl);
-         // 获取当前SDK版本号接口
+        // 获取当前SDK版本号接口
         String sdkVersion = FastSdk.getSdkVersion();
         Log.i(Constants.tag, "当前SDK版本号：" + sdkVersion);
     }
@@ -168,7 +169,6 @@ public class MainActivity extends UnityPlayerActivity {
     }
 
 
-
 //===================================================================================
 
 
@@ -182,15 +182,14 @@ public class MainActivity extends UnityPlayerActivity {
     public void openApiGetDeviceInfo(String gameObject, String methodName) {
         try {
             sentMessage(gameObject, methodName, DeviceTools.openApiGetDeviceInfo(this));
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.i(Constants.tag, e.getMessage());
         }
     }
 
     /**
      * apk 下载
-     * String res = JSON.parseObject(initConfigResponse).getString("value");
-     * JSONObject dynamicConfig = JSON.parseObject(res);
+     * JSONObject dynamicConfig = JSON.parseObject(initConfigResponse);
      * String update_version = dynamicConfig.getString("updateVersion");
      * Integer update_type = dynamicConfig.getInteger("updateType");
      * String update_url = dynamicConfig.getString("updateUrl");
@@ -199,8 +198,14 @@ public class MainActivity extends UnityPlayerActivity {
     public void openApiGetdownload() {
         Log.i(Constants.tag, "openApiGetdownload ok");
         try {
+            String json = "{\"updateVersion\":\"2.1.0\",\"updateType\":\"2\",\"packageName\":\"com.hule.fishing\",\"updateUrl\":1,\"updateMsg\":\"2.1.0\"}";
             // 版本更新处理
-            UpdateSdkUtil.updateSdkVersion(this, "currentVersionCode2", "res", "appname");
+            UpdateSdkUtil.updateSdkVersion(this, "2.0.0", json, "测试下载", new ChannelInterfaceProxy.ApplicationInitCallback() {
+                @Override
+                public void execute() {
+                    Log.i(Constants.tag, "加载apk失败，参数不正确！！！！！");
+                }
+            });
         } catch (Exception e) {
             Log.i(Constants.tag, "openApiGetdownload err");
         }

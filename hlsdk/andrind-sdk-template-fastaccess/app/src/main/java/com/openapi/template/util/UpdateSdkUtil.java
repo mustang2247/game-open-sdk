@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.openapi.template.Constants;
+import com.openapi.template.cb.ChannelInterfaceProxy;
 
 /**
  * Created by Administrator on 2016/12/6.
@@ -25,64 +26,55 @@ import com.openapi.template.Constants;
  */
 public class UpdateSdkUtil {
 
-    public static void updateSdkVersion(Context context, String currentVersionCode, String initConfigResponse, final String appName) {
+    /**
+     * SDK更新
+     * @param context
+     * @param currentVersionCode
+     * @param initConfigResponse
+     * @param appName
+     */
+    public static void updateSdkVersion(Context context, String currentVersionCode, String initConfigResponse, final String appName, ChannelInterfaceProxy.ApplicationInitCallback callback) {
         try {
-            String res = JSON.parseObject(initConfigResponse).getString("value");
-            JSONObject dynamicConfig = JSON.parseObject(res);
+            JSONObject dynamicConfig = JSON.parseObject(initConfigResponse);
             String update_version = dynamicConfig.getString("updateVersion");
             Integer update_type = dynamicConfig.getInteger("updateType");
             String update_url = dynamicConfig.getString("updateUrl");
             String updateMsg = dynamicConfig.getString("updateMsg");
             if (update_type == null || Strings.isNullOrEmpty(update_version) || Strings.isNullOrEmpty(update_url)) {
                 Log.i(Constants.tag, "updateSdkVersion isNullOrEmpty2");
-//                callback.execute();
+                callback.execute();
                 return;
             }
             if (update_type != Constants.TIP_UPDATE && update_type != Constants.FORCE_UPDATE) {
                 Log.i(Constants.tag, "updateSdkVersion 3");
-//                callback.execute();
+                callback.execute();
                 return;
             }
             checkWifiAndAlert(context, currentVersionCode, update_version, update_type, update_url, updateMsg, appName);
         } catch (Exception e) {
-//            Log.e("updateSdkVersion Fail ", e);
-//            callback.execute();
+            Log.e("updateSdkVersion Fail ", e.getMessage());
+            callback.execute();
         }
     }
 
-    private static void updateStart(final Context context, String currentVersionCode, String update_version, final Integer update_type, final String update_url, String updateMsg, final String appName) {
-        String msg = "将版本" + currentVersionCode + "升级到" + update_version + "\n" + updateMsg;
-        updateSdkAlert(context, msg, update_type == Constants.FORCE_UPDATE, new ChannelInterfaceProxy.ApplicationInitCallback() {
-            @Override
-            public void execute() {
-                Log.i(Constants.tag, "updateSdkVersion 下次再说");
-//                callback.execute();
-            }
-        }, new ChannelInterfaceProxy.ApplicationInitCallback() {
-            @Override
-            public void execute() {
-                Intent intent = new Intent();
-                intent.setAction("com.hoolai.open.fastaccess.UpdateService");
-                intent.setPackage(context.getPackageName());
-                intent.putExtra(UpdateService.DOWNLOAD_URL, update_url);
-                intent.putExtra(UpdateService.DOWNLOAD_APP_NAME, appName);
-                context.startService(intent);
-
-                if (update_type == Constants.TIP_UPDATE) {// 不强制更新
-                    Log.i(Constants.tag, "updateSdkVersion onInitSuccess");
-//                    callback.execute();
-                } else {
-                    Toast.makeText(context, "正在更新中，请稍后...", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-    }
-
+    /**
+     * 检查网络并提示
+     * @param context
+     * @param currentVersionCode
+     * @param update_version
+     * @param update_type
+     * @param update_url
+     * @param updateMsg
+     * @param appName
+     */
     private static void checkWifiAndAlert(final Context context, final String currentVersionCode, final String update_version, final Integer update_type, final String update_url, final String updateMsg, final String appName) {
         if (APNUtil.checkNetworkType(context) == APNUtil.TYPE_WIFI) {
+            // 如果wifi直接更新
             updateStart(context, currentVersionCode, update_version, update_type, update_url, updateMsg, appName);
             return;
         }
+
+        // 不是wifi弹出提示
         final AlertDialog alertDialog = new AlertDialog.Builder(context, AlertDialog.THEME_HOLO_LIGHT).create();
 
         LinearLayout linearLayoutRoot = new LinearLayout(context);
@@ -160,6 +152,44 @@ public class UpdateSdkUtil {
 //        rootParentLayout.setBackgroundColor(0xFFffff11);
         rootParentLayout.addView(linearLayoutRoot, rootParams);
         window.setContentView(rootParentLayout);
+    }
+
+    /**
+     * 开始更新
+     * @param context
+     * @param currentVersionCode
+     * @param update_version
+     * @param update_type
+     * @param update_url
+     * @param updateMsg
+     * @param appName
+     */
+    private static void updateStart(final Context context, String currentVersionCode, String update_version, final Integer update_type, final String update_url, String updateMsg, final String appName) {
+        String msg = "将版本" + currentVersionCode + "升级到" + update_version + "\n" + updateMsg;
+        updateSdkAlert(context, msg, update_type == Constants.FORCE_UPDATE, new ChannelInterfaceProxy.ApplicationInitCallback() {
+            @Override
+            public void execute() {
+                Log.i(Constants.tag, "updateSdkVersion 下次再说");
+//                callback.execute();
+            }
+        }, new ChannelInterfaceProxy.ApplicationInitCallback() {
+            @Override
+            public void execute() {
+                Intent intent = new Intent();
+                intent.setAction("com.openapi.template.util.UpdateService");
+                intent.setPackage(context.getPackageName());
+                intent.putExtra(UpdateService.DOWNLOAD_URL, update_url);
+                intent.putExtra(UpdateService.DOWNLOAD_APP_NAME, appName);
+                context.startService(intent);
+
+                if (update_type == Constants.TIP_UPDATE) {// 不强制更新
+                    Log.i(Constants.tag, "updateSdkVersion onInitSuccess");
+//                    callback.execute();
+                } else {
+                    Toast.makeText(context, "正在更新中，请稍后...", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     private static void updateSdkAlert(Context context, String msg, final boolean forceUpdate, ChannelInterfaceProxy.ApplicationInitCallback applicationInitCallback, ChannelInterfaceProxy.ApplicationInitCallback initCallback) {

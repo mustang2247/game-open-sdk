@@ -1,4 +1,4 @@
-package com.openapi.template.util;
+package com.openapi.template.cb;
 
 public class ChannelInterfaceProxy{
 
