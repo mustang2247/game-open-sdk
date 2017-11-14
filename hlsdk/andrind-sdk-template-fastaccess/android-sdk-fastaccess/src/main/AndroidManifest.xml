@@ -1,0 +1,61 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.hoolai.fastaccesssdk">
+
+    <uses-sdk
+        android:minSdkVersion="16" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.GET_TOP_ACTIVITY_INFO" />
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+
+    <!--<application-->
+        <!--android:allowBackup="true"-->
+        <!--android:icon="@drawable/icon"-->
+        <!--android:label="@string/app_name">-->
+        <!--<activity android:name="com.openapi.fastaccess.activity.MainActivityFastAccess">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+
+            <!--<meta-data-->
+                <!--android:name="unityplayer.UnityActivity"-->
+                <!--android:value="true" />-->
+
+        <!--</activity>-->
+
+        <!--<activity-->
+            <!--android:name="com.hoolai.sdk.activity.FastAccessLoginActivity"-->
+            <!--android:configChanges="keyboardHidden|orientation|screenSize"-->
+            <!--android:theme="@android:style/Theme.Translucent.NoTitleBar"-->
+            <!--android:windowSoftInputMode="adjustResize"></activity>-->
+        <!--<activity-->
+            <!--android:name="com.hoolai.sdk.activity.FastAccessNotifyActivity"-->
+            <!--android:screenOrientation="sensor"></activity>-->
+        <!--<activity-->
+            <!--android:name="com.hoolai.open.fastaccess.channel.impl.fastaccess.FASTACCESSSplashActivity"-->
+            <!--android:screenOrientation="sensor" />-->
+        <!--&lt;!&ndash; 将下面meta-data的value替换为接入平台的productId &ndash;&gt;-->
+        <!--<meta-data-->
+            <!--android:name="game_package_product_id"-->
+            <!--android:value="1" />-->
+
+    <!--</application>-->
+
+
+</manifest>
