@@ -35,7 +35,7 @@ public class MainActivity extends UnityPlayerActivity {
         FastaccessSdk.getInstance().init(this, Constants.tag, new SendMessageCallBack() {
             @Override
             public void sentMessage(String gameObject, String methodName, String msg) {
-                this.sentMessage(gameObject, methodName, msg);
+                sentMessageToUnity(gameObject, methodName, msg);
             }
         });
 
@@ -181,7 +181,7 @@ public class MainActivity extends UnityPlayerActivity {
      */
     public void openApiGetDeviceInfo(String gameObject, String methodName) {
         try {
-            sentMessage(gameObject, methodName, DeviceTools.openApiGetDeviceInfo(this));
+            sentMessageToUnity(gameObject, methodName, DeviceTools.openApiGetDeviceInfo(this));
         } catch (Exception e) {
             Log.i(Constants.tag, e.getMessage());
         }
@@ -224,7 +224,7 @@ public class MainActivity extends UnityPlayerActivity {
         // 参数1表示发送游戏对象的名称
         // 参数2表示对象绑定的脚本接收该消息的方法
         // 参数3表示本条消息发送的字符串信息，这个方法与IOS发送消息的方式非常相像
-        sentMessage("MainGame", "GetMessage", "hi:  " + name);
+        sentMessageToUnity("MainGame", "GetMessage", "hi:  " + name);
     }
 
     /**
@@ -232,8 +232,8 @@ public class MainActivity extends UnityPlayerActivity {
      * @param methodName 参数2表示对象绑定的脚本接收该消息的方法
      * @param msg        参数3表示本条消息发送的字符串信息，这个方法与IOS发送消息的方式非常相像
      */
-    public void sentMessage(String gameObject, String methodName, String msg) {
-        Log.i(Constants.tag, "sentMessage:  " + gameObject + " : " + methodName + "  :  " + msg);
+    public void sentMessageToUnity(String gameObject, String methodName, String msg) {
+        Log.i(Constants.tag, "sentMessageToUnity:  " + gameObject + " : " + methodName + "  :  " + msg);
         try {
             UnityPlayer.UnitySendMessage(gameObject, methodName, msg);
         } catch (Exception e) {
