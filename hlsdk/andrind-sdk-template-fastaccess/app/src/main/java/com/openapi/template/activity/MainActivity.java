@@ -218,7 +218,7 @@ public class MainActivity extends UnityPlayerActivity {
      *
      * @param name
      */
-    public void StartActivity0(String name) {
+    public void startEco(String name) {
         if (name == null || name.isEmpty()) return;
         Log.i(Constants.tag, name);
         // 参数1表示发送游戏对象的名称
