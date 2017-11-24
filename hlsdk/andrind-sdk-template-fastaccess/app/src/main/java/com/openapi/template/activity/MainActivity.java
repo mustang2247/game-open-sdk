@@ -180,10 +180,12 @@ public class MainActivity extends UnityPlayerActivity {
      * @return
      */
     public void openApiGetDeviceInfo(String gameObject, String methodName) {
+        String json = null;
         try {
-            sentMessageToUnity(gameObject, methodName, DeviceTools.openApiGetDeviceInfo(this));
+            json = DeviceTools.openApiGetDeviceInfo(this);
+            sentMessageToUnity(gameObject, methodName, json);
         } catch (Exception e) {
-            Log.i(Constants.tag, e.getMessage());
+            Log.i(Constants.tag, "gameObject:" + gameObject + " methodName: " + methodName + " deviceInfo: " + json +  e.getMessage());
         }
     }
 

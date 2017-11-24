@@ -49,7 +49,7 @@ public class DeviceTools {
         Map<String, String> params = new HashMap<String, String>();
 
         params.put("metric", "equipment");
-        params.put("ip", APNUtil.getIp(context));
+        params.put("ip", "");//解决部分低端手机无法获取IP问题
         params.put("ds", SysUtil.getSysDate());
 
         String json = JSON.toJSONString(DeviceTools.headers);
