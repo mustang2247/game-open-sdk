@@ -30,6 +30,7 @@ import com.openapi.apkdownload.cb.OnProgressListener;
  */
 public class UpdateSdkUtil {
 
+    private static Context mcontext;
     /**
      * SDK更新
      * @param context
@@ -39,6 +40,7 @@ public class UpdateSdkUtil {
      */
     public static void updateSdkVersion(Context context, String currentVersionCode, String initConfigResponse, final String appName, ChannelInterfaceProxy.ApplicationInitCallback callback) {
         try {
+            mcontext = context;
             JSONObject dynamicConfig = JSON.parseObject(initConfigResponse);
             String update_version = dynamicConfig.getString("updateVersion");
             Integer update_type = dynamicConfig.getInteger("updateType");
@@ -221,7 +223,11 @@ public class UpdateSdkUtil {
                     updateBtn.setText("正在更新中，请稍后..." + progressNum + "%");
 //                    bnp.setProgress((int)(fraction * 100));
 
-//                    //判断是否真的下载完成进行安装了，以及是否注册绑定过服务
+                    //判断是否真的下载完成进行安装了，以及是否注册绑定过服务
+                    if (fraction == UpdateService.UNBIND_SERVICE && isBindService) {
+                        mcontext.unbindService(conn);
+                        isBindService = false;
+                    }
 //                    if (fraction == UpdateService.UNBIND_SERVICE && isBindService) {
 //                        unbindService(conn);
 //                        isBindService = false;

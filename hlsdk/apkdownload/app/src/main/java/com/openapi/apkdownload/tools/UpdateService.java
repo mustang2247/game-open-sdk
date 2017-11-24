@@ -45,6 +45,7 @@ public class UpdateService extends Service {
 
     private DownloadBinder binder;
     public static final int HANDLE_DOWNLOAD = 0x001;
+    public static final float UNBIND_SERVICE = 2.0F;
     //下载任务ID
     private long downloadId;
     private String downloadUrl;
@@ -54,6 +55,7 @@ public class UpdateService extends Service {
      */
     private OnProgressListener onProgressListener;
     private ScheduledExecutorService scheduledExecutorService;
+    private DownloadChangeObserver downloadObserver;
 
     /**
      * 初始化下载器
@@ -62,6 +64,7 @@ public class UpdateService extends Service {
         Log.i(Constants.tag, "initDownManager 初始化下载器  " + downloadUrl);
 
         downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+        downloadObserver = new DownloadChangeObserver();
         receiver = new DownloadCompleteReceiver();
 
         //设置下载地址
@@ -137,6 +140,10 @@ public class UpdateService extends Service {
                 installAPK(downloadManager.getUriForDownloadedFile(downId));
                 //停止服务并关闭广播
                 UpdateService.this.stopSelf();
+
+                if (onProgressListener != null) {
+                    onProgressListener.onProgress(UNBIND_SERVICE);
+                }
             }
         }
     }
