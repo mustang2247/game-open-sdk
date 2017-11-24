@@ -217,6 +217,8 @@ public class UpdateSdkUtil {
                 public void onProgress(float fraction) {
                     Log.i(Constants.tag, "下载进度：" + fraction);
                     progressNum = (int)(fraction * 100);
+                    toast.setText("正在更新中，请稍后..." + progressNum + "%");
+                    updateBtn.setText("正在更新中，请稍后..." + progressNum + "%");
 //                    bnp.setProgress((int)(fraction * 100));
 
 //                    //判断是否真的下载完成进行安装了，以及是否注册绑定过服务
@@ -234,6 +236,8 @@ public class UpdateSdkUtil {
 
         }
     };
+
+    private static Button updateBtn;
 
     /**
      * 更新提示
@@ -296,7 +300,7 @@ public class UpdateSdkUtil {
             btnLayout.addView(nextBtn, nextLL);
         }
 
-        final Button updateBtn = new Button(context);
+        updateBtn = new Button(context);
         updateBtn.setBackgroundColor(0xff3189ea);
         updateBtn.setText("更新");
         updateBtn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
