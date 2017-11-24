@@ -2,15 +2,23 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.openapi.apkdownload">
 
+    <!--网络通信权限-->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!--SD卡写入数据权限-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!--SD卡创建与删除权限-->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <!--VISIBILITY_HIDDEN表示不显示任何通知栏提示的权限-->
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION"/>
+    <!--DownloadManager-->
+    <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
@@ -39,14 +47,7 @@
 
         </activity>
 
-        <!--<service android:name="org.openudid.OpenUdid_service"-->
-            <!--android:enabled="true">-->
-            <!--<intent-filter >-->
-                <!--<action android:name="com.openapi.util.UpdateService"/>-->
-            <!--</intent-filter>-->
-        <!--</service>-->
-
-        <service android:name="com.openapi.apkdownload.util.UpdateService"
+        <service android:name="com.openapi.apkdownload.tools.UpdateService"
             android:enabled="true">
             <intent-filter >
                 <action android:name="com.openapi.util.UpdateService"/>

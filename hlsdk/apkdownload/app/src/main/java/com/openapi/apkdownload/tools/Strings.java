@@ -1,4 +1,4 @@
-package com.openapi.apkdownload.util;
+package com.openapi.apkdownload.tools;
 
 public class Strings {
 	public static boolean isNullOrEmpty(String s){

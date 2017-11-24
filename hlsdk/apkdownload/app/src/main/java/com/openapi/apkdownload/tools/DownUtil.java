@@ -1,4 +1,4 @@
-package com.openapi.apkdownload.util;
+package com.openapi.apkdownload.tools;
 
 import java.io.InputStream;
 import java.io.RandomAccessFile;

@@ -1,4 +1,4 @@
-package com.openapi.apkdownload.util;
+package com.openapi.apkdownload.tools;
 
 import android.content.Context;
 import android.util.TypedValue;

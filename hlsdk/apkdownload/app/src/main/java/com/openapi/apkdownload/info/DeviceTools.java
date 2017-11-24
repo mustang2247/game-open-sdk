@@ -11,8 +11,8 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.openapi.apkdownload.Constants;
-import com.openapi.apkdownload.util.APNUtil;
-import com.openapi.apkdownload.util.SysUtil;
+import com.openapi.apkdownload.tools.APNUtil;
+import com.openapi.apkdownload.tools.SysUtil;
 
 import org.openudid.OpenUdidManager;
 

@@ -1,9 +1,12 @@
-package com.openapi.apkdownload.util;
+package com.openapi.apkdownload.tools;
 
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
+import android.os.IBinder;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -19,6 +22,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.openapi.apkdownload.Constants;
 import com.openapi.apkdownload.cb.ChannelInterfaceProxy;
+import com.openapi.apkdownload.cb.OnProgressListener;
 
 /**
  * Created by Administrator on 2016/12/6.
@@ -175,6 +179,7 @@ public class UpdateSdkUtil {
         }, new ChannelInterfaceProxy.ApplicationInitCallback() {
             @Override
             public void execute() {
+                progressNum = 0;
                 Intent intent = new Intent();
                 intent.setAction("com.openapi.util.UpdateService");
                 intent.setPackage(context.getPackageName());
@@ -182,15 +187,53 @@ public class UpdateSdkUtil {
                 intent.putExtra(UpdateService.DOWNLOAD_APP_NAME, appName);
                 context.startService(intent);
 
+                // 绑定
+                isBindService = context.bindService(intent, conn, Context.BIND_AUTO_CREATE);
+
                 if (update_type == Constants.TIP_UPDATE) {// 不强制更新
                     Log.i(Constants.tag, "updateSdkVersion onInitSuccess");
 //                    callback.execute();
                 } else {
-                    Toast.makeText(context, "正在更新中，请稍后...", Toast.LENGTH_LONG).show();
+                    toast = Toast.makeText(context, "正在更新中，请稍后..." + progressNum + "%", Toast.LENGTH_LONG);
+                    toast.show();
                 }
             }
         });
     }
+
+    private static Toast toast;
+    private static boolean isBindService;
+    private static int progressNum = 0;
+    private static ServiceConnection conn = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            UpdateService.DownloadBinder binder = (UpdateService.DownloadBinder) service;
+            UpdateService downloadService = binder.getService();
+
+            //接口回调，下载进度
+            downloadService.setOnProgressListener(new OnProgressListener() {
+                @Override
+                public void onProgress(float fraction) {
+                    Log.i(Constants.tag, "下载进度：" + fraction);
+                    progressNum = (int)(fraction * 100);
+//                    bnp.setProgress((int)(fraction * 100));
+
+//                    //判断是否真的下载完成进行安装了，以及是否注册绑定过服务
+//                    if (fraction == UpdateService.UNBIND_SERVICE && isBindService) {
+//                        unbindService(conn);
+//                        isBindService = false;
+//                        MToast.shortToast("下载完成！");
+//                    }
+                }
+            });
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
 
     /**
      * 更新提示
@@ -264,7 +307,7 @@ public class UpdateSdkUtil {
                 if (!forceUpdate) {
                     alertDialog.cancel();
                 } else {
-                    updateBtn.setText("后台更新中...");
+                    updateBtn.setText("后台更新中..." + progressNum + "%");
                     updateBtn.setEnabled(false);
                 }
                 updateCallback.execute();
