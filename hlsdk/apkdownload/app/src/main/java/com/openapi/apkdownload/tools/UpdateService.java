@@ -54,7 +54,9 @@ public class UpdateService extends Service {
      * 监听下载进度
      */
     private OnProgressListener onProgressListener;
-    private ScheduledExecutorService scheduledExecutorService;
+    /**
+     * 设置内容观察者监听,监听文件下载进度，监听Uri.parse("content://downloads/my_downloads")
+     */
     private DownloadChangeObserver downloadObserver;
 
     /**
@@ -64,8 +66,11 @@ public class UpdateService extends Service {
         Log.i(Constants.tag, "initDownManager 初始化下载器  " + downloadUrl);
 
         downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-        downloadObserver = new DownloadChangeObserver();
         receiver = new DownloadCompleteReceiver();
+        // 设置内容观察者监听,监听文件下载进度
+        downloadObserver = new DownloadChangeObserver(downLoadHandler);
+
+        registerContentObserver();
 
         //设置下载地址
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(downloadUrl));
@@ -78,8 +83,8 @@ public class UpdateService extends Service {
         /**如果我们希望下载的文件可以被系统的Downloads应用扫描到并管理，
          我们需要调用Request对象的setVisibleInDownloadsUi方法，传递参数true.*/
         request.setVisibleInDownloadsUi(true);
-        // 显示下载界面
-        request.setVisibleInDownloadsUi(true);
+        //下载完成后显示通知栏提示
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         /**设置文件保存路径*/
         request.setDestinationInExternalFilesDir(getApplicationContext(), Environment.DIRECTORY_DOWNLOADS, downloadName + ".apk");
         /**将下载请求放入队列， return下载任务的ID*/
@@ -87,6 +92,25 @@ public class UpdateService extends Service {
 
         //注册下载广播
         registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+    }
+
+    /**
+     * 注册ContentObserver
+     */
+    private void registerContentObserver() {
+        /** observer download change **/
+        if (downloadObserver != null) {
+            getContentResolver().registerContentObserver(Uri.parse("content://downloads/my_downloads"), false, downloadObserver);
+        }
+    }
+
+    /**
+     * 注销ContentObserver
+     */
+    private void unregisterContentObserver() {
+        if (downloadObserver != null) {
+            getContentResolver().unregisterContentObserver(downloadObserver);
+        }
     }
 
     @Override
@@ -117,6 +141,7 @@ public class UpdateService extends Service {
         if (receiver != null) {
             unregisterReceiver(receiver);
         }
+        unregisterContentObserver();
         super.onDestroy();
 
         Log.i(Constants.tag, "下载任务服务销毁");
@@ -204,12 +229,12 @@ public class UpdateService extends Service {
     };
     /**
      * 监听下载进度
+     * 设置内容观察者监听,监听文件下载进度，监听Uri.parse("content://downloads/my_downloads")
      */
-    private class DownloadChangeObserver extends ContentObserver {
+    class DownloadChangeObserver extends ContentObserver {
 
-        public DownloadChangeObserver() {
-            super(downLoadHandler);
-            scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        public DownloadChangeObserver(Handler handler) {
+            super(handler);
         }
 
         /**
@@ -219,16 +244,10 @@ public class UpdateService extends Service {
          */
         @Override
         public void onChange(boolean selfChange) {
-            scheduledExecutorService.scheduleAtFixedRate(progressRunnable, 0, 2, TimeUnit.SECONDS);
-        }
-    }
-
-    private Runnable progressRunnable = new Runnable() {
-        @Override
-        public void run() {
+            super.onChange(selfChange);
             updateProgress();
         }
-    };
+    }
 
     /**
      * 发送Handler消息更新进度和状态
@@ -265,6 +284,8 @@ public class UpdateService extends Service {
                 cursor.close();
             }
         }
+
+        Log.i("----------", bytesAndStatus[0] + "/" +bytesAndStatus[1] + "%^^^");
         return bytesAndStatus;
     }
 
@@ -272,10 +293,6 @@ public class UpdateService extends Service {
      * 关闭定时器，线程等操作
      */
     private void close() {
-        if (scheduledExecutorService != null && !scheduledExecutorService.isShutdown()) {
-            scheduledExecutorService.shutdown();
-        }
-
         if (downLoadHandler != null) {
             downLoadHandler.removeCallbacksAndMessages(null);
         }
