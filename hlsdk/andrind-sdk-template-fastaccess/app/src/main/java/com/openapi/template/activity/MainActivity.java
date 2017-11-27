@@ -12,7 +12,7 @@ import com.hoolai.open.fastaccess.channel.FastSdk;
 import com.openapi.template.Constants;
 import com.openapi.template.cb.ChannelInterfaceProxy;
 import com.openapi.template.info.DeviceTools;
-import com.openapi.template.util.UpdateSdkUtil;
+import com.openapi.template.service.UpdateSdkUtil;
 import com.unity3d.player.UnityPlayer;
 import com.unity3d.player.UnityPlayerActivity;
 

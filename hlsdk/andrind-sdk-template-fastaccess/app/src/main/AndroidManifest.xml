@@ -40,7 +40,7 @@
 
         </activity>
 
-        <service android:name="com.openapi.template.util.UpdateService"
+        <service android:name="com.openapi.template.service.UpdateService"
             android:enabled="true">
             <intent-filter >
                 <action android:name="com.openapi.util.UpdateService"/>

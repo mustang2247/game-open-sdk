@@ -1,4 +1,4 @@
-package com.openapi.template.util;
+package com.openapi.template.tools;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;

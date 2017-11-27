@@ -1,4 +1,4 @@
-package com.openapi.template.util;
+package com.openapi.template.tools;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -19,6 +19,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.openapi.template.Constants;
 import com.openapi.template.cb.ChannelInterfaceProxy;
+import com.openapi.template.utils.APNUtil;
+import com.openapi.template.utils.Strings;
 
 /**
  * Created by Administrator on 2016/12/6.

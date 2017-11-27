@@ -1,4 +1,4 @@
-package com.openapi.template.util;
+package com.openapi.template.tools;
 
 public interface AsyncHttpResponse {
     

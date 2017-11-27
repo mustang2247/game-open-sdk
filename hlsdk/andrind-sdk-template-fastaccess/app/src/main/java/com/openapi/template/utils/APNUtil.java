@@ -1,4 +1,4 @@
-package com.openapi.template.util;
+package com.openapi.template.utils;
 
 import android.content.Context;
 import android.database.Cursor;

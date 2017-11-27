@@ -1,4 +1,4 @@
-package com.openapi.template.util;
+package com.openapi.template.tools;
 
 import android.app.DownloadManager;
 import android.app.Service;

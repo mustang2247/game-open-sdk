@@ -1,4 +1,4 @@
-package com.openapi.template.util;
+package com.openapi.template.utils;
 
 public class Strings {
 	public static boolean isNullOrEmpty(String s){

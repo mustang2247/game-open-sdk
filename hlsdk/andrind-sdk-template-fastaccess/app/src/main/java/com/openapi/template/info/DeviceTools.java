@@ -12,8 +12,8 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.openapi.template.Constants;
-import com.openapi.template.util.APNUtil;
-import com.openapi.template.util.SysUtil;
+import com.openapi.template.utils.APNUtil;
+import com.openapi.template.utils.SysUtil;
 
 import org.openudid.OpenUdidManager;
 
