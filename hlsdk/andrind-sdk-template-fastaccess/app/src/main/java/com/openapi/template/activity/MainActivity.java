@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 
 import com.hoolai.fastaccesssdk.fastaccess.FastaccessSdk;
@@ -22,6 +23,7 @@ import com.unity3d.player.UnityPlayerActivity;
 public class MainActivity extends UnityPlayerActivity {
 
     Context mContext = null;
+    final Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -197,17 +199,24 @@ public class MainActivity extends UnityPlayerActivity {
      * String update_url = dynamicConfig.getString("updateUrl");
      * String updateMsg = dynamicConfig.getString("updateMsg");
      */
-    public void openApiGetdownload(String currentVersionCode, String configInfo, final String appName) {
-        Log.i(Constants.tag, "openApiGetdownload ok");
+    public void openApiGetdownload(final String currentVersionCode, final String configInfo, final String appName) {
+        Log.i(Constants.tag, "openApiGetdownload ok " + currentVersionCode);
         try {
 //            String json = "{\"updateVersion\":\"2.1.0\",\"updateType\":\"2\",\"packageName\":\"com.hule.fishing\",\"updateUrl\":\"http://huleshikongres-10034783.cossh.myqcloud.com/download.apk\",\"updateMsg\":\"2.1.0\"}";
-            // 版本更新处理
-            UpdateSdkUtil.updateSdkVersion(this, currentVersionCode, configInfo, appName, new ChannelInterfaceProxy.ApplicationInitCallback() {
+
+            mHandler.post(new Runnable() {
                 @Override
-                public void execute() {
-                    Log.i(Constants.tag, "加载apk失败，参数不正确！！！！！");
+                public void run() {
+                    // 版本更新处理
+                    UpdateSdkUtil.updateSdkVersion(mContext, currentVersionCode, configInfo, appName, new ChannelInterfaceProxy.ApplicationInitCallback() {
+                        @Override
+                        public void execute() {
+                            Log.i(Constants.tag, "加载apk失败，参数不正确！！！！！");
+                        }
+                    });
                 }
             });
+
         } catch (Exception e) {
             Log.i(Constants.tag, "openApiGetdownload err");
         }

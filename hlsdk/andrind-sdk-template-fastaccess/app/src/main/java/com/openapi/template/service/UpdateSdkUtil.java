@@ -173,8 +173,8 @@ public class UpdateSdkUtil {
      * @param appName
      */
     private static void updateStart(final Context context, String currentVersionCode, String update_version, final Integer update_type, final String update_url, String updateMsg, final String appName) {
-        String msg = "将版本" + currentVersionCode + "升级到" + update_version + "\n" + updateMsg;
-        updateSdkAlert(context, msg, update_type == Constants.FORCE_UPDATE, new ChannelInterfaceProxy.ApplicationInitCallback() {
+//        String msg = "将版本" + currentVersionCode + "升级到" + update_version + "\n" + updateMsg;
+        updateSdkAlert(context, updateMsg, update_type == Constants.FORCE_UPDATE, new ChannelInterfaceProxy.ApplicationInitCallback() {
             @Override
             public void execute() {
                 Log.i(Constants.tag, "updateSdkVersion 下次再说");
@@ -220,14 +220,16 @@ public class UpdateSdkUtil {
                 public void onProgress(float fraction) {
                     Log.i(Constants.tag, "下载进度：" + fraction);
                     progressNum = (int)(fraction * 100);
-                    updateBtn.setText("正在更新中，请稍后..." + progressNum + "%");
-//                    bnp.setProgress((int)(fraction * 100));
-
-                    //判断是否真的下载完成进行安装了，以及是否注册绑定过服务
-                    if (fraction == UpdateService.UNBIND_SERVICE && isBindService) {
-                        mcontext.unbindService(conn);
-                        isBindService = false;
-                        Log.i(Constants.tag,"下载完成！");
+                    try {
+                        updateBtn.setText("正在更新中，请稍后..." + progressNum + "%");
+                        //判断是否真的下载完成进行安装了，以及是否注册绑定过服务
+                        if (fraction == UpdateService.UNBIND_SERVICE && isBindService) {
+                            mcontext.unbindService(conn);
+                            isBindService = false;
+                            Log.i(Constants.tag,"下载完成！");
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
                     }
                 }
             });
