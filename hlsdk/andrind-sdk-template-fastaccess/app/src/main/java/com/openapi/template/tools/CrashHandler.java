@@ -218,7 +218,25 @@ public class CrashHandler implements UncaughtExceptionHandler {
             while (true) {
                 s = reader.readLine();
                 if (s == null) break;
+                //===================
+//                AppID	开发者访问 COS 服务时拥有的用户维度唯一资源标识，用以标识资源
+//                SecretID	开发者拥有的项目身份识别 ID，用以身份认证
+//                SecretKey	开发者拥有的项目身份密钥
+//                Bucket	COS 中用于存储数据的容器
+//                Object	COS 中存储的具体文件，是存储的基本实体
+
+//                APPID: 1251810956
+//                SecretId: AKID41nOn1z1mLitthtvPPM9kCSWp16DmoV1
+//                SecretKey: Sjp4DAvBLMBoFYmpiT7ZouoW2Regv3zj
+                //===================
+                //===================
+                //===================
                 //由于目前尚未确定以何种方式发送，所以先打出log日志。
+                //===================
+                //===================
+                //===================
+                //===================
+
                 Log.i("info", s.toString());
             }
         } catch (FileNotFoundException e) {
