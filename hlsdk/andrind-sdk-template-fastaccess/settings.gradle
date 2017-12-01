@@ -1,1 +1,1 @@
-include ':app', ':android-sdk-fastaccess'
+include ':app', ':android-sdk-fastaccess', ':commonlibs'

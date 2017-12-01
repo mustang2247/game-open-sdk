@@ -1,4 +1,4 @@
-package com.openapi.template.tools;
+package com.open.commonlibs.tools;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -9,13 +9,10 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
+import com.open.commonlibs.cos.FileUploadUtils;
+
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -68,6 +65,8 @@ public class CrashHandler implements UncaughtExceptionHandler {
      */
     public void init(Context context) {
         mContext = context;
+
+        FileUploadUtils.init(context);
         // 获取系统默认的UncaughtException处理器
         mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
         // 设置该CrashHandler为程序的默认处理器
@@ -209,47 +208,54 @@ public class CrashHandler implements UncaughtExceptionHandler {
             Toast.makeText(mContext, "日志文件不存在！", Toast.LENGTH_SHORT).show();
             return;
         }
-        FileInputStream fis = null;
-        BufferedReader reader = null;
-        String s = null;
+
         try {
-            fis = new FileInputStream(fileName);
-            reader = new BufferedReader(new InputStreamReader(fis, "GBK"));
-            while (true) {
-                s = reader.readLine();
-                if (s == null) break;
-                //===================
-//                AppID	开发者访问 COS 服务时拥有的用户维度唯一资源标识，用以标识资源
-//                SecretID	开发者拥有的项目身份识别 ID，用以身份认证
-//                SecretKey	开发者拥有的项目身份密钥
-//                Bucket	COS 中用于存储数据的容器
-//                Object	COS 中存储的具体文件，是存储的基本实体
-
-//                APPID: 1251810956
-//                SecretId: AKID41nOn1z1mLitthtvPPM9kCSWp16DmoV1
-//                SecretKey: Sjp4DAvBLMBoFYmpiT7ZouoW2Regv3zj
-                //===================
-                //===================
-                //===================
-                //由于目前尚未确定以何种方式发送，所以先打出log日志。
-                //===================
-                //===================
-                //===================
-                //===================
-
-                Log.i("info", s.toString());
-            }
-        } catch (FileNotFoundException e) {
+            FileUploadUtils.updateLog(fileName);
+        }catch (Exception e){
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {   // 关闭流
-            try {
-                reader.close();
-                fis.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
+
+//        FileInputStream fis = null;
+//        BufferedReader reader = null;
+//        String s = null;
+//        try {
+//            fis = new FileInputStream(fileName);
+//            reader = new BufferedReader(new InputStreamReader(fis, "GBK"));
+//            while (true) {
+//                s = reader.readLine();
+//                if (s == null) break;
+//                //===================
+////                AppID	开发者访问 COS 服务时拥有的用户维度唯一资源标识，用以标识资源
+////                SecretID	开发者拥有的项目身份识别 ID，用以身份认证
+////                SecretKey	开发者拥有的项目身份密钥
+////                Bucket	COS 中用于存储数据的容器
+////                Object	COS 中存储的具体文件，是存储的基本实体
+//
+////                APPID: 1251810956
+////                SecretId: AKID41nOn1z1mLitthtvPPM9kCSWp16DmoV1
+////                SecretKey: Sjp4DAvBLMBoFYmpiT7ZouoW2Regv3zj
+//                //===================
+//                //===================
+//                //===================
+//                //由于目前尚未确定以何种方式发送，所以先打出log日志。
+//                //===================
+//                //===================
+//                //===================
+//                //===================
+//
+//                Log.i("info", s.toString());
+//            }
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } finally {   // 关闭流
+//            try {
+//                reader.close();
+//                fis.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 }

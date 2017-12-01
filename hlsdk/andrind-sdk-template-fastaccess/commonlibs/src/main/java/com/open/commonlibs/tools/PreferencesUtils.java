@@ -1,4 +1,4 @@
-package com.openapi.template.tools;
+package com.open.commonlibs.tools;
 
 import android.content.Context;
 import android.content.SharedPreferences.Editor;

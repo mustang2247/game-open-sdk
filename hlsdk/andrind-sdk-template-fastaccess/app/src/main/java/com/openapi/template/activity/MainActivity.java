@@ -10,6 +10,7 @@ import android.util.Log;
 import com.hoolai.fastaccesssdk.fastaccess.FastaccessSdk;
 import com.hoolai.fastaccesssdk.fastaccess.SendMessageCallBack;
 import com.hoolai.open.fastaccess.channel.FastSdk;
+import com.open.commonlibs.tools.CrashHandler;
 import com.openapi.template.Constants;
 import com.openapi.template.cb.ChannelInterfaceProxy;
 import com.openapi.template.info.DeviceTools;
@@ -32,8 +33,6 @@ public class MainActivity extends UnityPlayerActivity {
         mContext = this;
         Log.i(Constants.tag, "unity3d onCreate 当前版本: " + DeviceTools.getVersionCode(this));
 
-        Log.i(Constants.tag, "unity3d onCreate: ");
-
         FastaccessSdk.getInstance().init(this, Constants.tag, new SendMessageCallBack() {
             @Override
             public void sentMessage(String gameObject, String methodName, String msg) {
@@ -46,6 +45,12 @@ public class MainActivity extends UnityPlayerActivity {
         // 获取当前SDK版本号接口
         String sdkVersion = FastSdk.getSdkVersion();
         Log.i(Constants.tag, "当前SDK版本号：" + sdkVersion);
+
+        try {
+            CrashHandler.getInstance().init(this);
+        }catch (Exception e){
+            Log.i(Constants.tag, "错误报告监控初始化失败:   " + e.getMessage());
+        }
     }
 
     @Override
