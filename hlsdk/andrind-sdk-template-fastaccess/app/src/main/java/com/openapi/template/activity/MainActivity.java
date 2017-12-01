@@ -52,18 +52,18 @@ public class MainActivity extends UnityPlayerActivity {
             Log.i(Constants.tag, "错误报告监控初始化失败:   " + e.getMessage());
         }
 
-        try{
-            reportDeviceInfo();
-        }catch (Exception e){
-            Log.i(Constants.tag, "报送设备信息失败:   " + e.getMessage());
-        }
+//        try{
+//            reportDeviceInfo();
+//        }catch (Exception e){
+//            Log.i(Constants.tag, "报送设备信息失败:   " + e.getMessage());
+//        }
     }
 
     public void reportDeviceInfo() {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                DeviceTools.reportDeviceInfo(mContext);
+//                DeviceTools.reportDeviceInfo(mContext);
             }
         });
     }

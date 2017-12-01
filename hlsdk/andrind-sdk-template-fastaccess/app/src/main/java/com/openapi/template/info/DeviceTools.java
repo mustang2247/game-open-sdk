@@ -10,6 +10,12 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.open.commonlibs.okhttp.CommonOkHttpClient;
+import com.open.commonlibs.okhttp.listener.DisposeDataHandle;
+import com.open.commonlibs.okhttp.listener.DisposeDataListener;
+import com.open.commonlibs.okhttp.request.CommonRequest;
+import com.open.commonlibs.okhttp.request.RequestParams;
 import com.openapi.template.Constants;
 import com.openapi.template.utils.APNUtil;
 import com.openapi.template.utils.SysUtil;
@@ -21,6 +27,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import okhttp3.Request;
+
 /**
  * http 服务工具类
  */
@@ -30,7 +38,63 @@ public class DeviceTools {
     private static Boolean isInit = false;
 
     public static void reportDeviceInfo(Context context) {
-        openApiGetDeviceInfo(context);
+        String data = openApiGetDeviceInfo(context);
+
+        JSONObject pd = JSON.parseObject(data);
+
+        JSONObject j1 = JSON.parseObject((String) pd.get("jsonString"));
+
+        JSONObject ct = new JSONObject();
+        ct.put("ip", pd.get("ip"));
+
+        ct.put("channelid", "_default_");
+        ct.put("deviceid", j1.get("imei"));
+        ct.put("androidid", j1.get("udid"));
+        ct.put("network", j1.get("networkType"));
+        ct.put("os", j1.get("system"));
+
+
+        ct.put("resolution", j1.get("ratio"));
+        ct.put("extra", j1.get("extra"));
+        ct.put("devicetype", j1.get("phone"));
+        ct.put("clientV", j1.get("clientVersion"));
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("appid", "asdfa");
+        jsonObject.put("context", ct);
+
+        RequestParams params = new RequestParams();
+        params.put("data",jsonObject.toJSONString());
+
+        Request request = CommonRequest.createGetRequest("http://bi.mybi.top:9000/track/install", params);
+//        Log.i(Constants.tag, request.toString());
+//        Log.i(Constants.tag, request.url().toString());
+
+        CommonOkHttpClient.get(request, new DisposeDataHandle(new DisposeDataListener() {
+            @Override
+            public void onSuccess(Object responseObj) {
+                Log.i(Constants.tag, "openApiGetDeviceInfo ok " + responseObj);
+            }
+
+            @Override
+            public void onFailure(Object reasonObj) {
+                Log.i(Constants.tag, "openApiGetDeviceInfo ok " + reasonObj);
+            }
+        }));
+
+
+        Request request1 = CommonRequest.createGetRequest("http://bi.mybi.top:9000/track/startup", params);
+        CommonOkHttpClient.get(request1, new DisposeDataHandle(new DisposeDataListener() {
+            @Override
+            public void onSuccess(Object responseObj) {
+                Log.i(Constants.tag, "openApiGetDeviceInfo ok " + responseObj);
+            }
+
+            @Override
+            public void onFailure(Object reasonObj) {
+                Log.i(Constants.tag, "openApiGetDeviceInfo ok " + reasonObj);
+            }
+        }));
     }
 
     /**
