@@ -9,7 +9,6 @@ import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-
 import com.alibaba.fastjson.JSON;
 import com.openapi.template.Constants;
 import com.openapi.template.utils.APNUtil;
@@ -30,7 +29,9 @@ public class DeviceTools {
     public static Map<String, String> headers = new HashMap<String, String>();
     private static Boolean isInit = false;
 
-    private static long differTime;
+    public static void reportDeviceInfo(Context context) {
+        openApiGetDeviceInfo(context);
+    }
 
     /**
      * 获取设备信息
