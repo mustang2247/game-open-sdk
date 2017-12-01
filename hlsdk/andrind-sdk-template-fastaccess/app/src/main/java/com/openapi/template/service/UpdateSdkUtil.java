@@ -218,7 +218,7 @@ public class UpdateSdkUtil {
             downloadService.setOnProgressListener(new OnProgressListener() {
                 @Override
                 public void onProgress(float fraction) {
-                    Log.i(Constants.tag, "下载进度：" + fraction);
+//                    Log.i(Constants.tag, "下载进度：" + fraction);
                     progressNum = (int)(fraction * 100);
                     try {
                         updateBtn.setText("正在更新中，请稍后..." + progressNum + "%");
