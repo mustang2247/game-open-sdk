@@ -27,11 +27,11 @@ public class BizService {
     /**
      * cos的appid
      */
-    public String appid;
+    public String appid = "10034783";//"1251810956";
     /**
      * appid的一个空间名称
      */
-    public String bucket;
+    public String bucket = "huleshikongres";//"crashreport";
     /**
      * cos sdk 的用户接口
      */
@@ -43,13 +43,18 @@ public class BizService {
      * 华北园区：tj 或 COSEndPoint.COS_TJ(已上线)
      * 华东园区：sh 或 COSEndPoint.COS_SH
      */
-    public String region;
+    public String region = "sh";
     /**
      * cos sdk 配置设置; 根据需要设置
      */
     private COSConfig config;
 
     private static BizService bizService;
+
+    private static String baseUrl = "huleshikongres-10034783.file.myqcloud.com/logs/fishing?";
+//    private static String baseUrl = "http://crashreport-1251810956.cosbj.myqcloud.com/logs/fishing?";
+    private static String secretId = "AKIDb6UmttXMpGXcYKxIZfcRDsXGtCRZ2PBo";//"AKID41nOn1z1mLitthtvPPM9kCSWp16DmoV1";
+    private static String secretKey = "azHOJ2a0Oj4HJ9oHYdWCgy4xiJivwlaF";//"Sjp4DAvBLMBoFYmpiT7ZouoW2Regv3zj";
 
     private BizService() {
     }
@@ -72,10 +77,10 @@ public class BizService {
         synchronized (this) {
             if (cosClient == null) {
                 config = new COSConfig();
-                region = "bj";
+//                region = "bj";
                 config.setEndPoint(region);
-                appid = "1251810956";
-                bucket = "crashreport";
+//                appid = "1251810956";
+//                bucket = "crashreport";
                 cosClient = new COSClient(context, appid, config, null);
 //                cosClient = new COSClient(context,appid,config,"xxxx");
             }
@@ -89,15 +94,15 @@ public class BizService {
      * @return
      */
     public String getLocalSign() {
-        String secretId = "AKID41nOn1z1mLitthtvPPM9kCSWp16DmoV1";
-        String secretKey = "Sjp4DAvBLMBoFYmpiT7ZouoW2Regv3zj";
+//        String secretId = "AKID41nOn1z1mLitthtvPPM9kCSWp16DmoV1";
+//        String secretKey = "Sjp4DAvBLMBoFYmpiT7ZouoW2Regv3zj";
         LocalCredentialProvider localCredentialProvider = new LocalCredentialProvider(secretKey);
         return localCredentialProvider.getSign(appid, bucket, secretId, null, 60 * 60);
     }
 
     public String getLocalOnceSign(String fileId) {
-        String secretId = "AKID41nOn1z1mLitthtvPPM9kCSWp16DmoV1";
-        String secretKey = "Sjp4DAvBLMBoFYmpiT7ZouoW2Regv3zj";
+//        String secretId = "AKID41nOn1z1mLitthtvPPM9kCSWp16DmoV1";
+//        String secretKey = "Sjp4DAvBLMBoFYmpiT7ZouoW2Regv3zj";
         LocalCredentialProvider localCredentialProvider = new LocalCredentialProvider(secretKey);
         return localCredentialProvider.getSign(appid, bucket, secretId, fileId, 60 * 60);
     }
@@ -111,7 +116,7 @@ public class BizService {
      */
     public String getSign() {
         String sign = null;
-        String cgi = "http://crashreport-1251810956.cosbj.myqcloud.com/logs/fishing?" + "bucket=" + bucket + "&service=video";
+        String cgi = baseUrl + "bucket=" + bucket + "&service=video";
         try {
             URL url = new URL(cgi);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -140,7 +145,7 @@ public class BizService {
     public String getSignOnce(String fileId) {
         urlEncoder(fileId);
         String onceSign = null;
-        String cgi = "http://crashreport-1251810956.cosbj.myqcloud.com/logs/fishing?" + "bucket=" + bucket + "&service=cos&expired=0&path=" + fileId;
+        String cgi = baseUrl + "bucket=" + bucket + "&service=cos&expired=0&path=" + fileId;
         try {
             URL url = new URL(cgi);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
