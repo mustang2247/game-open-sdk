@@ -14,6 +14,7 @@ import com.open.commonlibs.tools.CrashHandler;
 import com.openapi.template.Constants;
 import com.openapi.template.cb.ChannelInterfaceProxy;
 import com.openapi.template.info.DeviceTools;
+import com.openapi.template.lebian.openapi.hllebiansdk.LebianTools;
 import com.openapi.template.service.UpdateSdkUtil;
 import com.unity3d.player.UnityPlayer;
 import com.unity3d.player.UnityPlayerActivity;
@@ -52,6 +53,11 @@ public class MainActivity extends UnityPlayerActivity {
             Log.i(Constants.tag, "错误报告监控初始化失败:   " + e.getMessage());
         }
 
+        try{
+            LebianTools.init(this);
+        }catch (Exception e){
+            Log.i(Constants.tag, "乐变初始化出错:   " + e.getMessage());
+        }
 //        try{
 //            reportDeviceInfo();
 //        }catch (Exception e){
@@ -239,6 +245,17 @@ public class MainActivity extends UnityPlayerActivity {
 
         } catch (Exception e) {
             Log.i(Constants.tag, "openApiGetdownload err");
+        }
+    }
+
+    /**
+     * 乐变热更新
+     */
+    public void queryUpdate() {
+        try {
+            LebianTools.queryUpdate();
+        } catch (Exception e) {
+            Log.i(Constants.tag, "乐变热更新失败");
         }
     }
 
