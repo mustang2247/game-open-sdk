@@ -1,0 +1,32 @@
+//apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
+
+android {
+    lintOptions {
+        abortOnError false
+    }
+    compileSdkVersion 25
+    buildToolsVersion "25.0.1"
+    defaultConfig {
+//        applicationId "lbsdkane.openapi.com.hllebiansdk"
+        minSdkVersion 15
+        targetSdkVersion 19
+//        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+//    buildTypes {
+//        release {
+//            minifyEnabled true
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//        }
+//    }
+//    signingConfigs {
+//        v2SigningEnabled false
+//    }
+    productFlavors {
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:25.0.1'
+}
