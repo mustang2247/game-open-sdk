@@ -14,7 +14,7 @@ import com.open.commonlibs.tools.CrashHandler;
 import com.openapi.template.Constants;
 import com.openapi.template.cb.ChannelInterfaceProxy;
 import com.openapi.template.info.DeviceTools;
-import com.openapi.template.lebian.openapi.hllebiansdk.LebianTools;
+import com.openapi.hllebiansdk.LebianTools;
 import com.openapi.template.service.UpdateSdkUtil;
 import com.unity3d.player.UnityPlayer;
 import com.unity3d.player.UnityPlayerActivity;

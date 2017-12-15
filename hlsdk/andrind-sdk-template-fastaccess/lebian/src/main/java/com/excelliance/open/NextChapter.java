@@ -1,4 +1,4 @@
-package com.openapi.template.lebian.excelliance.open;
+package com.excelliance.open;
 
 import android.app.Activity;
 import android.app.AlertDialog.Builder;

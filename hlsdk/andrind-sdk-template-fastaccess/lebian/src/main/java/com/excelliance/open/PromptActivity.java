@@ -1,4 +1,4 @@
-package com.openapi.template.lebian.excelliance.open;
+package com.excelliance.open;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -28,7 +28,6 @@ import android.widget.TextView;
 
 import com.excelliance.lbsdk.base.BaseUtil;
 import com.excelliance.lbsdk.base.BwbxUtilHelper;
-import com.excelliance.lbsdk.base.NetworkUtil;
 
 import java.io.Serializable;
 import java.lang.reflect.Constructor;

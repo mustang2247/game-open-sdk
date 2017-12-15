@@ -1,4 +1,4 @@
-package com.openapi.template.lebian.openapi.hllebiansdk;
+package com.openapi.hllebiansdk;
 
 import android.content.Context;
 import android.util.Log;

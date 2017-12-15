@@ -1,13 +1,12 @@
-package com.openapi.template.lebian.excelliance.open;
+package com.excelliance.open;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 
 import com.excelliance.lbsdk.LBSdkHelper;
-import com.openapi.template.lebian.openapi.hllebiansdk.MyApplication;
+import com.openapi.hllebiansdk.MyApplication;
 
 import java.lang.reflect.Field;
 

@@ -1,4 +1,4 @@
-package com.openapi.template.lebian.excelliance.open;
+package com.excelliance.open;
 
 import android.content.Context;
 import android.util.Log;
