@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
+import com.bdsdk.openapi.bdsdk.ane.BaiDuSDK;
+import com.bdsdk.openapi.bdsdk.ane.BaiDuSDKSendMessageCallBack;
+import com.duoku.platform.single.DKPlatform;
 import com.hoolai.fastaccesssdk.fastaccess.FastaccessSdk;
 import com.hoolai.fastaccesssdk.fastaccess.SendMessageCallBack;
 import com.hoolai.open.fastaccess.channel.FastSdk;
@@ -34,27 +37,57 @@ public class MainActivity extends UnityPlayerActivity {
         mContext = this;
         Log.i(Constants.tag, "unity3d onCreate 当前版本: " + DeviceTools.getVersionCode(this));
 
+        getSharedPreferences("test" , MODE_PRIVATE);
+
+
+
+
+        /**
+         * hoolai SDK
+         * 需要用时打开此SDK注释和下面生命周期以及所有do方法的公司SDK注释， 并把百度SDK的初始化和相关生命周期和所有do方法的百度SDK注释
+         *
+         * */
         FastaccessSdk.getInstance().init(this, Constants.tag, new SendMessageCallBack() {
-            @Override
-            public void sentMessage(String gameObject, String methodName, String msg) {
-                sentMessageToUnity(gameObject, methodName, msg);
-            }
+        @Override
+        public void sentMessage(String gameObject, String methodName, String msg) {
+        sentMessageToUnity(gameObject, methodName, msg);
+        }
         });
 
-        // 接入开始
-        FastSdk.onCreate(this, FastaccessSdk.getInstance().initCallbackImpl);
-        // 获取当前SDK版本号接口
-        String sdkVersion = FastSdk.getSdkVersion();
-        Log.i(Constants.tag, "当前SDK版本号：" + sdkVersion);
+         // 接入开始
+         FastSdk.onCreate(this, FastaccessSdk.getInstance().initCallbackImpl);
+         // 获取当前SDK版本号接口
+         String sdkVersion = FastSdk.getSdkVersion();
+         Log.i(Constants.tag, "当前SDK版本号：" + sdkVersion);
+
+
+
+
+        /**
+         * 百度 SDK
+         * 需要用时打开此SDK注释和下面生命周期以及所有do方法的百度SDK注释， 并把公司SDK的初始化和相关生命周期和所有do方法的公司SDK注释
+         *
+             BaiDuSDK.getInstance().init(this, Constants.tag, new BaiDuSDKSendMessageCallBack() {
+            @Override
+            public void sentMessage(String gameObject, String methodName, String msg) {
+            sentMessageToUnity(gameObject, methodName, msg);
+            }
+        });
+         * */
+
+
+
+
+
 
         try {
-            CrashHandler.getInstance().init(this);
+            //CrashHandler.getInstance().init(this);
         }catch (Exception e){
             Log.i(Constants.tag, "错误报告监控初始化失败:   " + e.getMessage());
         }
 
         try{
-            LebianTools.init(this);
+            //LebianTools.init(this);
         }catch (Exception e){
             Log.i(Constants.tag, "乐变初始化出错:   " + e.getMessage());
         }
@@ -90,12 +123,14 @@ public class MainActivity extends UnityPlayerActivity {
     protected void onResume() {
         super.onResume();
         FastSdk.onResume(this);
+        //DKPlatform.getInstance().resumeBaiduMobileStatistic(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         FastSdk.onPause(this);
+        //DKPlatform.getInstance().pauseBaiduMobileStatistic(this);
     }
 
     @Override
@@ -146,30 +181,37 @@ public class MainActivity extends UnityPlayerActivity {
 
     public void doLogin(final String paramString) {
         FastaccessSdk.getInstance().doLogin(paramString);
+        //BaiDuSDK.getInstance().doLogin(paramString);
     }
 
     public void doPay(final int amount, final String itemName, final String callbackInfo, final String customParams) {
         FastaccessSdk.getInstance().doPay(amount, itemName, callbackInfo, customParams);
+        //BaiDuSDK.getInstance().doPay(amount, itemName, callbackInfo, customParams);
     }
 
     public void doLogout(final String paramString) {
         FastaccessSdk.getInstance().doLogout(paramString);
+        //BaiDuSDK.getInstance().doLogout(paramString);
     }
 
     public void doExit(final String SDKListening, final String exitCallbackMethod) {
         FastaccessSdk.getInstance().doExit(SDKListening, exitCallbackMethod);
+        //BaiDuSDK.getInstance().doExit(SDKListening, exitCallbackMethod);
     }
 
     public void doGetServers(final String SDKListening, final String callbackMethod, final String version) {
         FastaccessSdk.getInstance().doGetServers(SDKListening, callbackMethod, version);
+        //BaiDuSDK.getInstance().doGetServers(SDKListening, callbackMethod, version);
     }
 
     public void doSelectServer(final String SDKListening, final String callbackMethod, final String serverId) {
         FastaccessSdk.getInstance().doSelectServer(SDKListening, callbackMethod, serverId);
+//        BaiDuSDK.getInstance().doSelectServer(SDKListening, callbackMethod, serverId);
     }
 
     public void doSendBIData(final String SDKListening, final String callbackMethod, final String metric, final String jsonString) {
         FastaccessSdk.getInstance().doSendBIData(SDKListening, callbackMethod, metric, jsonString);
+//        BaiDuSDK.getInstance().doSendBIData(SDKListening, callbackMethod, metric, jsonString);
     }
 
     public void setExtData(final String json) {
@@ -178,6 +220,7 @@ public class MainActivity extends UnityPlayerActivity {
 
     public void doInit(final String SDKListening, final String initCallback, final String loginCallback, final String payCallback, String onMaintenanceCallback) {
         FastaccessSdk.getInstance().doInit(SDKListening, initCallback, loginCallback, payCallback, onMaintenanceCallback);
+//        BaiDuSDK.getInstance().doInit(SDKListening, initCallback, loginCallback, payCallback, onMaintenanceCallback);
     }
 
     public void releaseResource() {
@@ -185,11 +228,12 @@ public class MainActivity extends UnityPlayerActivity {
     }
 
     public void showToast(final String paramString) {
-        FastaccessSdk.getInstance().showToast(paramString);
+        //FastaccessSdk.getInstance().showToast(paramString);
     }
 
     public String getMainifestMetaData(String name) {
-        return FastaccessSdk.getInstance().getMainifestMetaData(name);
+        //return FastaccessSdk.getInstance().getMainifestMetaData(name);
+        return "";
     }
 
     public String getSdkVersion() {

@@ -1,1 +1,1 @@
-include ':app', ':android-sdk-fastaccess', ':commonlibs', ':lebian'
+include ':app', ':android-sdk-fastaccess', ':commonlibs', ':lebian', ':baidu'
