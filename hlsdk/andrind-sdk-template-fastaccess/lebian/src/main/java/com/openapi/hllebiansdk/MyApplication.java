@@ -10,22 +10,22 @@ import com.hoolai.open.fastaccess.channel.HoolaiApplication;
 public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
-        HoolaiApplication.onApplicationCreate(this);
+        //HoolaiApplication.onApplicationCreate(this);
     }
 
     public void onTerminate() {
         super.onTerminate();
-        HoolaiApplication.onApplicationTerminate(this);
+        //HoolaiApplication.onApplicationTerminate(this);
     }
 
     protected void attachBaseContext(Context context) {
         super.attachBaseContext(context);
-        HoolaiApplication.attachBaseContext(this, context);
+        //HoolaiApplication.attachBaseContext(this, context);
     }
 
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        HoolaiApplication.onConfigurationChanged(this, newConfig);
+        //HoolaiApplication.onConfigurationChanged(this, newConfig);
     }
 
 }

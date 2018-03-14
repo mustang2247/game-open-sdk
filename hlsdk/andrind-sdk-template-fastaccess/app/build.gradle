@@ -48,6 +48,7 @@ dependencies {
     compile project(':commonlibs')
     compile project(':lebian')
     compile project(':baidu')
+    compile project(':xiaoy')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:26.1.0'
 }

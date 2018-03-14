@@ -94,74 +94,102 @@ public class BaiDuSDK {
      * 用户登陆
      */
     private void login() {
-    	Log.i(tag, "login");
-		DKPlatform.getInstance().invokeBDLogin((Activity) mContext, loginlistener);
+		mHandler.post(new Runnable() {
+			@Override
+			public void run() {
+				Log.i(tag, "login");
+				DKPlatform.getInstance().invokeBDLogin((Activity) mContext, loginlistener);
+			}
+		});
     }
     /**
      * 切换账号
      */
     private void account() {
-		DKPlatform.getInstance().invokeBDChangeAccount((Activity) mContext, loginlistener);
-		Log.i(tag, "logout");
+		mHandler.post(new Runnable() {
+			@Override
+			public void run() {
+				DKPlatform.getInstance().invokeBDChangeAccount((Activity) mContext, loginlistener);
+				Log.i(tag, "logout");
+			}
+		});
     }
 
     /**
      * 游戏暂停
      */
     private void pause() {
-		DKPlatform.getInstance().bdgamePause((Activity) mContext, new IDKSDKCallBack()
-			{
-				@Override
-				public void onResponse(String paramString) {
-					Log.d("GameMainActivity","bggamePause success");}
-			});
-		Log.i(tag, "logout");
+		mHandler.post(new Runnable() {
+			@Override
+			public void run() {
+				DKPlatform.getInstance().bdgamePause((Activity) mContext, new IDKSDKCallBack()
+				{
+					@Override
+					public void onResponse(String paramString) {
+						Log.d("GameMainActivity","bggamePause success");}
+				});
+				Log.i(tag, "logout");
+			}
+		});
     }
 
     /**
      * 退出游戏
      */
     private void logout() {
-		DKPlatform.getInstance().invokeBDChangeAccount((Activity) mContext, loginlistener);
-		Log.i(tag, "logout");
+		mHandler.post(new Runnable() {
+			@Override
+			public void run() {
+				DKPlatform.getInstance().invokeBDChangeAccount((Activity) mContext, loginlistener);
+				Log.i(tag, "logout");
+			}
+		});
     }
 
     /**
      * 游戏支付
      */
-    private void pay(int amount, String itemName, String callbackInfo, String customParams) {
-
-		try {
-
-			Log.i(tag, itemName);
-			JSONObject jsonObject = new JSONObject(itemName);
-			Log.i(tag, itemName);
-			GamePropsInfo propsFirst = new GamePropsInfo(jsonObject.getString(mPropsId), jsonObject.getString(mPrice), jsonObject.getString(mTitle),jsonObject.getString(mUserdata));
-			propsFirst.setThirdPay(jsonObject.getString(thirdpay));
-			DKPlatform.getInstance().invokePayCenterActivity((Activity) mContext,
-					propsFirst,
-					null,null, null,null,null,RechargeCallback);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		Log.i(tag, "invokePay");
+    private void pay(int amount, final String itemName, String callbackInfo, String customParams) {
+		mHandler.post(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Log.i(tag, itemName);
+					JSONObject jsonObject = new JSONObject(itemName);
+					Log.i(tag, itemName);
+					GamePropsInfo propsFirst = new GamePropsInfo(jsonObject.getString(mPropsId), jsonObject.getString(mPrice), jsonObject.getString(mTitle),jsonObject.getString(mUserdata));
+					propsFirst.setThirdPay(jsonObject.getString(thirdpay));
+					DKPlatform.getInstance().invokePayCenterActivity((Activity) mContext,
+							propsFirst,
+							null,null, null,null,null,RechargeCallback);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				Log.i(tag, "invokePay");
+			}
+		});
     };
     /**
      * 游戏退出
      */
     private void exit() {
-		DKPlatform.getInstance().bdgameExit((Activity) mContext, new IDKSDKCallBack() {
+		mHandler.post(new Runnable() {
 			@Override
-			public void onResponse(String paramString) {
-				//是中国移动卡且咪咕已初始化
-				if (PhoneUtil.isChinaMobile((Activity) mContext) && DKSingleSDKSettings.GAMEBASE_SDK_INIT_IS_OK ) {
-					exitWithMigu();
-				}else{
-					exitGameDirectly();
-				}
+			public void run() {
+				DKPlatform.getInstance().bdgameExit((Activity) mContext, new IDKSDKCallBack() {
+					@Override
+					public void onResponse(String paramString) {
+						//是中国移动卡且咪咕已初始化
+						if (PhoneUtil.isChinaMobile((Activity) mContext) && DKSingleSDKSettings.GAMEBASE_SDK_INIT_IS_OK ) {
+							exitWithMigu();
+						}else{
+							exitGameDirectly();
+						}
+					}
+				});
+				Log.i(tag, "exit");
 			}
 		});
-		Log.i(tag, "exit");
     }
 
     /**
@@ -198,99 +226,114 @@ public class BaiDuSDK {
 
  	// 初始化SDK
  	private void initSDK(){
- 		//百度账号
- 		DKPlatform.getInstance().invokeBDInitApplication(((Activity) mContext).getApplication());
- 		Log.i("openapiunity3d", "百度账号 invokeBDInitApplication ");
- 		Log.i(tag,"初始化SDK");
- 		//回调函数
- 		IDKSDKCallBack initcompletelistener = new IDKSDKCallBack(){
- 			@Override
- 			public void onResponse(String paramString) {
- 				Log.d("GameMainActivity", paramString);
- 				try {
- 					JSONObject jsonObject = new JSONObject(paramString);
- 					// 返回的操作状态码
- 					int mFunctionCode = jsonObject.getInt(DkProtocolKeys.FUNCTION_CODE);
- 					Log.d(tag, "返回的操作状态码:"+mFunctionCode);
- 					//初始化完成
- 					if(mFunctionCode == DkErrorCode.BDG_CROSSRECOMMEND_INIT_FINSIH){
- 						initLogin();
-						initAds();
-						Log.d("openapiunity3d", DKPlatformSettings.SdkMode.SDK_PAY + "1111");
-						callBack.sentMessage(SDKListening, initCallback, toResultData(Type_Init_Success, new BaiDuEntry("data", Type_Init_Success)));
- 					}
- 					else
- 					{
-						Log.d("openapiunity3d", DKPlatformSettings.SdkMode.SDK_PAY + "22222");
-						callBack.sentMessage(SDKListening, initCallback, toResultData(Type_Init_Fail, new BaiDuEntry("data", Type_Init_Fail)));
- 					}
- 				} catch (Exception e) {
- 					e.printStackTrace();
- 				}
- 			}
- 		};
+		mHandler.post(new Runnable() {
+			@Override
+			public void run() {
+				//百度账号
+				DKPlatform.getInstance().invokeBDInitApplication(((Activity) mContext).getApplication());
+				Log.i("openapiunity3d", "百度账号 invokeBDInitApplication ");
+				Log.i(tag,"初始化SDK");
+				//回调函数
+				IDKSDKCallBack initcompletelistener = new IDKSDKCallBack(){
+					@Override
+					public void onResponse(String paramString) {
+						Log.d("GameMainActivity", paramString);
+						try {
+							JSONObject jsonObject = new JSONObject(paramString);
+							// 返回的操作状态码
+							int mFunctionCode = jsonObject.getInt(DkProtocolKeys.FUNCTION_CODE);
+							Log.d(tag, "返回的操作状态码:"+mFunctionCode);
+							//初始化完成
+							if(mFunctionCode == DkErrorCode.BDG_CROSSRECOMMEND_INIT_FINSIH){
+								initLogin();
+								initAds();
+								Log.d("openapiunity3d", DKPlatformSettings.SdkMode.SDK_PAY + "1111");
+								callBack.sentMessage(SDKListening, initCallback, toResultData(Type_Init_Success, new BaiDuEntry("data", Type_Init_Success)));
+							}
+							else
+							{
+								Log.d("openapiunity3d", DKPlatformSettings.SdkMode.SDK_PAY + "22222");
+								callBack.sentMessage(SDKListening, initCallback, toResultData(Type_Init_Fail, new BaiDuEntry("data", Type_Init_Fail)));
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				};
 
- 		//参数为测试数据，接入时请填入你真实数据
- 		DKCMMMData mmData = new DKCMMMData("9889988","WcdMUGCHVQfwGrOM72dygfTu");
- 		DKCMGBData gbData = new DKCMGBData();
- 		DKCpWoStoreData woData = new DKCpWoStoreData("001");
- 		//初始化函数
-		Log.d("openapiunity3d", DKPlatformSettings.SdkMode.SDK_PAY + "");
- 		DKPlatform.getInstance().init((Activity) mContext, true, DKPlatformSettings.SdkMode.SDK_PAY,null,null,null,initcompletelistener);
+				//参数为测试数据，接入时请填入你真实数据
+				DKCMMMData mmData = new DKCMMMData("9889988","WcdMUGCHVQfwGrOM72dygfTu");
+				DKCMGBData gbData = new DKCMGBData();
+				DKCpWoStoreData woData = new DKCpWoStoreData("001");
+				//初始化函数
+				Log.d("openapiunity3d", DKPlatformSettings.SdkMode.SDK_PAY + "");
+				DKPlatform.getInstance().init((Activity) mContext, true, DKPlatformSettings.SdkMode.SDK_PAY,null,null,null,initcompletelistener);
+			}
+		});
  	}
  	//登陆初始化,接入百度账号功能的需要调用此接口
  		private void initLogin(){
- 			Log.d(tag, "登陆初始化,接入百度账号功能的需要调用此接口");
- 			//回调函数
- 			 loginlistener = new IDKSDKCallBack(){
- 				@Override
- 				public void onResponse(String paramString) {
- 					try {
- 						JSONObject jsonObject = new JSONObject(paramString);
- 						// 返回的操作状态码
- 						int mFunctionCode = jsonObject.getInt(DkProtocolKeys.FUNCTION_CODE);
- 						Log.d(tag, "initLogin 返回的操作状态码:"+mFunctionCode);
- 						
- 						// 返回的百度uid，供cp绑定使用
- 						String bduid = jsonObject.getString(DkProtocolKeys.BD_UID);
- 						//dispatchEvent("IDKSDKCallBack  json:", paramString);
-						com.alibaba.fastjson.JSONObject successObj = new com.alibaba.fastjson.JSONObject();
- 						successObj.put("uid", bduid);
-						successObj.put("plantformSdk", "baidusdk");
-						successObj.put("userName", "baidusdk");
-						successObj.put("customParams", "onLoginFailed");
-						successObj.put("detail", mFunctionCode);
- 						//登陆成功
- 						if(mFunctionCode == DkErrorCode.DK_ACCOUNT_LOGIN_SUCCESS){
-							callBack.sentMessage(SDKListening, loginCallback, toResultData(Type_Login_Success, new BaiDuEntry("data", successObj)));
- 							//登陆失败
- 						}else if(mFunctionCode == DkErrorCode.DK_ACCOUNT_LOGIN_FAIL){
-							callBack.sentMessage(SDKListening, loginCallback, toResultData(Type_Login_Fail, new BaiDuEntry("data", successObj)));
- 							//快速注册成功
- 						}else if(mFunctionCode == DkErrorCode.DK_ACCOUNT_QUICK_REG_SUCCESS){
+			mHandler.post(new Runnable() {
+				@Override
+				public void run() {
+					Log.d(tag, "登陆初始化,接入百度账号功能的需要调用此接口");
+					//回调函数
+					loginlistener = new IDKSDKCallBack(){
+						@Override
+						public void onResponse(String paramString) {
+							try {
+								JSONObject jsonObject = new JSONObject(paramString);
+								// 返回的操作状态码
+								int mFunctionCode = jsonObject.getInt(DkProtocolKeys.FUNCTION_CODE);
+								Log.d(tag, "initLogin 返回的操作状态码:"+mFunctionCode);
 
-							callBack.sentMessage(SDKListening, loginCallback, toResultData(Type_Login_Success, new BaiDuEntry("data", successObj)));
- 						}else {
- 							//dispatchEvent(String.valueOf(mFunctionCode),"未处理");
- 						}
- 					} catch (Exception e) {
- 						e.printStackTrace();
- 					}
- 				}
- 			};
-			DKPlatform.getInstance().invokeBDInit((Activity) mContext, loginlistener);
+								// 返回的百度uid，供cp绑定使用
+								String bduid = jsonObject.getString(DkProtocolKeys.BD_UID);
+								//dispatchEvent("IDKSDKCallBack  json:", paramString);
+								com.alibaba.fastjson.JSONObject successObj = new com.alibaba.fastjson.JSONObject();
+								successObj.put("uid", bduid);
+								successObj.put("plantformSdk", "baidusdk");
+								successObj.put("userName", "baidusdk");
+								successObj.put("customParams", "onLoginFailed");
+								successObj.put("detail", mFunctionCode);
+								//登陆成功
+								if(mFunctionCode == DkErrorCode.DK_ACCOUNT_LOGIN_SUCCESS){
+									callBack.sentMessage(SDKListening, loginCallback, toResultData(Type_Login_Success, new BaiDuEntry("data", successObj)));
+									//登陆失败
+								}else if(mFunctionCode == DkErrorCode.DK_ACCOUNT_LOGIN_FAIL){
+									callBack.sentMessage(SDKListening, loginCallback, toResultData(Type_Login_Fail, new BaiDuEntry("data", successObj)));
+									//快速注册成功
+								}else if(mFunctionCode == DkErrorCode.DK_ACCOUNT_QUICK_REG_SUCCESS){
+
+									callBack.sentMessage(SDKListening, loginCallback, toResultData(Type_Login_Success, new BaiDuEntry("data", successObj)));
+								}else {
+									//dispatchEvent(String.valueOf(mFunctionCode),"未处理");
+								}
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					};
+					DKPlatform.getInstance().invokeBDInit((Activity) mContext, loginlistener);
+				}
+			});
  		}
 
  		/**
  		 * 品宣接口初始化
  		 */
  		private void initAds(){
- 			DKPlatform.getInstance().bdgameInit((Activity) mContext, new IDKSDKCallBack() {
- 				@Override
- 				public void onResponse(String paramString) {
- 					Log.d("GameMainActivity","bggameInit success");
- 				}
- 			});
+			mHandler.post(new Runnable() {
+				@Override
+				public void run() {
+					DKPlatform.getInstance().bdgameInit((Activity) mContext, new IDKSDKCallBack() {
+						@Override
+						public void onResponse(String paramString) {
+							Log.d("GameMainActivity","bggameInit success");
+						}
+					});
+				}
+			});
  		}
  		/**
  		 * 咪咕版本调用
@@ -301,7 +344,7 @@ public class BaiDuSDK {
 // 				GameInterface.exit(currentActivity, new GameInterface.GameExitCallback() {
 // 					@Override
 // 					public void onConfirmExit() {
-// 						
+//
 // 						exitGameDirectly();
 // 					}
 // 					@Override
@@ -332,10 +375,10 @@ public class BaiDuSDK {
  					JSONObject jsonObject = new JSONObject(paramString);
  					// 支付状态码
  					int mStatusCode = jsonObject.getInt(DkProtocolKeys.FUNCTION_STATUS_CODE);
- 					
+
  					if(mStatusCode == DkErrorCode.BDG_RECHARGE_SUCCESS){
  						// 返回支付成功的状态码，开发者可以在此处理相应的逻辑
- 						
+
  						// 订单ID
  						String mOrderId = null;
  						// 订单状态
@@ -348,25 +391,25 @@ public class BaiDuSDK {
  						String mOrderPayChannel = null;
  						//道具原始价格，若微信、支付宝未配置打折该值为空，
  						String mOrderPriceOriginal = null;
- 						
- 						if(jsonObject.has(DkProtocolKeys.BD_ORDER_ID)){						
- 							mOrderId = jsonObject.getString(DkProtocolKeys.BD_ORDER_ID);	
+
+ 						if(jsonObject.has(DkProtocolKeys.BD_ORDER_ID)){
+ 							mOrderId = jsonObject.getString(DkProtocolKeys.BD_ORDER_ID);
  							SharedUtil.getInstance((Activity) mContext).saveString("payment_orderid", mOrderId);
  						}
  						if(jsonObject.has(DkProtocolKeys.BD_ORDER_STATUS)){
  							mOrderStatus = jsonObject.getString(DkProtocolKeys.BD_ORDER_STATUS);
  						}
- 						if(jsonObject.has(DkProtocolKeys.BD_ORDER_PRODUCT_ID)){			
+ 						if(jsonObject.has(DkProtocolKeys.BD_ORDER_PRODUCT_ID)){
  							mOrderProductId = jsonObject.getString(DkProtocolKeys.BD_ORDER_PRODUCT_ID);
  						}
- 						if(jsonObject.has(DkProtocolKeys.BD_ORDER_PAY_CHANNEL)){						
+ 						if(jsonObject.has(DkProtocolKeys.BD_ORDER_PAY_CHANNEL)){
  							mOrderPayChannel = jsonObject.getString(DkProtocolKeys.BD_ORDER_PAY_CHANNEL);
  						}
- 						if(jsonObject.has(DkProtocolKeys.BD_ORDER_PRICE)){						
+ 						if(jsonObject.has(DkProtocolKeys.BD_ORDER_PRICE)){
  							mOrderPrice = jsonObject.getString(DkProtocolKeys.BD_ORDER_PRICE);
  						}
  						//int mNum = Integer.valueOf(mOrderPrice) * 10;
- 						if(jsonObject.has(DkProtocolKeys.BD_ORDER_PAY_ORIGINAL)){						
+ 						if(jsonObject.has(DkProtocolKeys.BD_ORDER_PAY_ORIGINAL)){
  							mOrderPriceOriginal = jsonObject.getString(DkProtocolKeys.BD_ORDER_PAY_ORIGINAL);
  						}
  						int mNum = 0;
@@ -380,38 +423,38 @@ public class BaiDuSDK {
 						callBack.sentMessage(SDKListening, payCallback, toResultData(Type_Pay_Success, new BaiDuEntry("customParams", "onSuccess Pay ")));
 // 						DemoRecordData data = new DemoRecordData(mOrderProductId, mOrderPrice, propsType, String.valueOf(mNum));
 // 						DemoDBDao.getInstance(activity).updateRechargeRecord(data);
- 						
+
  					}else if(mStatusCode == DkErrorCode.BDG_RECHARGE_USRERDATA_ERROR){
- 						
+
  						Toast.makeText((Activity) mContext, "用户透传数据不合法", Toast.LENGTH_LONG).show();
 						callBack.sentMessage(SDKListening, payCallback, toResultData(Type_Pay_Fail, new BaiDuEntry("customParams", "onFail Pay ")));
- 						
+
  					}else if(mStatusCode == DkErrorCode.BDG_RECHARGE_ACTIVITY_CLOSED){
- 						
+
  						// 返回玩家手动关闭支付中心的状态码，开发者可以在此处理相应的逻辑
  						Toast.makeText((Activity) mContext, "玩家关闭支付中心", Toast.LENGTH_LONG).show();
 						callBack.sentMessage(SDKListening, payCallback, toResultData(Type_Pay_Fail, new BaiDuEntry("customParams", "onFail Pay ")));
- 						
- 					}else if(mStatusCode == DkErrorCode.BDG_RECHARGE_FAIL){ 
- 						if(jsonObject.has(DkProtocolKeys.BD_ORDER_ID)){			
+
+ 					}else if(mStatusCode == DkErrorCode.BDG_RECHARGE_FAIL){
+ 						if(jsonObject.has(DkProtocolKeys.BD_ORDER_ID)){
  							SharedUtil.getInstance((Activity) mContext).saveString("payment_orderid", jsonObject.getString(DkProtocolKeys.BD_ORDER_ID));
  						}
  						// 返回支付失败的状态码，开发者可以在此处理相应的逻辑
  						Toast.makeText((Activity) mContext, "购买失败", Toast.LENGTH_LONG).show();
 						callBack.sentMessage(SDKListening, payCallback, toResultData(Type_Pay_Fail, new BaiDuEntry("customParams", "onFail Pay ")));
- 						
- 					} else if(mStatusCode == DkErrorCode.BDG_RECHARGE_EXCEPTION){ 
- 						
+
+ 					} else if(mStatusCode == DkErrorCode.BDG_RECHARGE_EXCEPTION){
+
  						// 返回支付出现异常的状态码，开发者可以在此处理相应的逻辑
  						Toast.makeText((Activity) mContext, "购买出现异常", Toast.LENGTH_LONG).show();
 						callBack.sentMessage(SDKListening, payCallback, toResultData(Type_Pay_Fail, new BaiDuEntry("customParams", "onFail Pay ")));
- 						
- 					} else if(mStatusCode == DkErrorCode.BDG_RECHARGE_CANCEL){ 
- 						
+
+ 					} else if(mStatusCode == DkErrorCode.BDG_RECHARGE_CANCEL){
+
  						// 返回取消支付的状态码，开发者可以在此处理相应的逻辑
  						Toast.makeText((Activity) mContext, "玩家取消支付", Toast.LENGTH_LONG).show();
 						callBack.sentMessage(SDKListening, payCallback, toResultData(Type_Pay_Fail, new BaiDuEntry("customParams", "onFail Pay ")));
- 						
+
  					} else {
  						Toast.makeText((Activity) mContext, "未知情况", Toast.LENGTH_LONG).show();
 						callBack.sentMessage(SDKListening, payCallback, toResultData(Type_Pay_Fail, new BaiDuEntry("customParams", "onFail Pay ")));
