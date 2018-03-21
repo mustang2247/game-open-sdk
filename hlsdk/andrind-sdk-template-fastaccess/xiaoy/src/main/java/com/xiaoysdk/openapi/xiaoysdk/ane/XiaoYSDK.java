@@ -142,7 +142,7 @@ public class XiaoYSDK {
 							@Override
 							public void onComplete() {
 								//启动插件成功
-								SdkHelper.onSceneChange("loginui");
+								//SdkHelper.onSceneChange("loginui");
 								Log.i(tag, " 启动插件成功！！！！！！！！！！~~~~~~~~~");
 
 								callBack.sentMessage(SDKListening, initCallback, toResultData(Type_Init_Success, new XiaoYEntry("data", Type_Init_Success)));

@@ -95,13 +95,16 @@ public class XiaoYSDKInterface implements SDKInterface {
     public void payCallBack(int payType, int status, String message){
         if( payType == 0 )
         {
-            XiaoYSDK.getInstance().callBack.sentMessage(XiaoYSDK.getInstance().SDKListening, XiaoYSDK.getInstance().payCallback, XiaoYSDK.getInstance().toResultData(XiaoYSDK.Type_Pay_Success, new XiaoYEntry("customParams", "onSuccess Pay ")));
-        }else if( payType == -1 )
-        {
-            XiaoYSDK.getInstance().callBack.sentMessage(XiaoYSDK.getInstance().SDKListening, XiaoYSDK.getInstance().payCallback, XiaoYSDK.getInstance().toResultData(XiaoYSDK.Type_Pay_Fail, new XiaoYEntry("customParams", "onFail Pay ")));
-        }else if( payType == -2 )
-        {
-            XiaoYSDK.getInstance().callBack.sentMessage(XiaoYSDK.getInstance().SDKListening, XiaoYSDK.getInstance().payCallback, XiaoYSDK.getInstance().toResultData(XiaoYSDK.Type_Pay_Fail, new XiaoYEntry("customParams", "onFail Pay ")));
+            if( status == 0 )
+            {
+                XiaoYSDK.getInstance().callBack.sentMessage(XiaoYSDK.getInstance().SDKListening, XiaoYSDK.getInstance().payCallback, XiaoYSDK.getInstance().toResultData(XiaoYSDK.Type_Pay_Success, new XiaoYEntry("customParams", "onSuccess Pay ")));
+            }else if( status == -1 )
+            {
+                XiaoYSDK.getInstance().callBack.sentMessage(XiaoYSDK.getInstance().SDKListening, XiaoYSDK.getInstance().payCallback, XiaoYSDK.getInstance().toResultData(XiaoYSDK.Type_Pay_Fail, new XiaoYEntry("customParams", "onFail Pay ")));
+            }else if( status == -2 )
+            {
+                XiaoYSDK.getInstance().callBack.sentMessage(XiaoYSDK.getInstance().SDKListening, XiaoYSDK.getInstance().payCallback, XiaoYSDK.getInstance().toResultData(XiaoYSDK.Type_Pay_Fail, new XiaoYEntry("customParams", "onFail Pay ")));
+            }
         }
     }
     @Override
@@ -155,8 +158,8 @@ public class XiaoYSDKInterface implements SDKInterface {
             }else if("sceneChange".equalsIgnoreCase(action))
             {
 
-               // SdkHelper.onSceneChange(json.getString("message"));
-                SdkHelper.onSceneChange(json.getJSONObject("message").toString());
+               SdkHelper.onSceneChange(json.getString("message"));
+                //SdkHelper.onSceneChange(json.getJSONObject("message").toString());
             }
         } catch (JSONException e) {
             e.printStackTrace();
