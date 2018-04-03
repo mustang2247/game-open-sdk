@@ -5,9 +5,10 @@ import android.content.Context;
 import android.content.res.Configuration;
 
 import com.hoolai.open.fastaccess.channel.HoolaiApplication;
+import com.stvgame.ysdk.business.YSDKApplication;
 
 
-public class MyApplication extends Application {
+public class MyApplication extends YSDKApplication {
     public void onCreate() {
         super.onCreate();
         //HoolaiApplication.onApplicationCreate(this);

@@ -121,6 +121,7 @@ public class XiaoYSDK {
 
 				Log.i("openapiunity3d", " pay！！！！！！！！！！~~~~~~~~~");
 				SdkHelper.xiaoyPay(info[0],customParams,amount+"",info[2],itemName,info[1]);
+
 			}
 		});
 	}
